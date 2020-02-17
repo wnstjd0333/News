@@ -7,7 +7,7 @@
 //
 
 import UIKit
-class Type1 : UITableViewCell {
+class NewsTableViewCell : UITableViewCell {
     
     @IBOutlet weak var LabelText: UILabel!
 }
