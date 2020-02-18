@@ -14,26 +14,26 @@ class ViewController: UIViewController {
     
     var newsData : Array<Dictionary<String, Any>>?
    
-    func fetchNews() {
-        let task = URLSession.shared.dataTask(with: URL(string: "https://newsapi.org/v2/top-headlines?country=kr&apiKey=1cbc735ec5564a2a8890343f5d23bc61")!){ (data, response, error) in
-            
-            if let dataJson = data {
-                do {
-                    let json = try JSONSerialization.jsonObject(with: dataJson, options: []) as! Dictionary<String, Any>
-                    
-                    let articles = json["articles"] as! Array<Dictionary<String, Any>>
-                    print(articles)
-                    self.newsData = articles
-                    
-                    DispatchQueue.main.async{
-                        self.TableViewMain.reloadData()
-                    }
-                }
-                catch {}
-            }
-        }
-        task.resume()
-    }
+//    func fetchNews() {
+//        let task = URLSession.shared.dataTask(with: URL(string: "https://newsapi.org/v2/top-headlines?country=kr&apiKey=1cbc735ec5564a2a8890343f5d23bc61")!){ (data, response, error) in
+//
+//            if let dataJson = data {
+//                do {
+//                    let json = try JSONSerialization.jsonObject(with: dataJson, options: []) as! Dictionary<String, Any>
+//
+//                    let articles = json["articles"] as! Array<Dictionary<String, Any>>
+//                    print(articles)
+//                    self.newsData = articles
+//
+//                    DispatchQueue.main.async{
+//                        self.TableViewMain.reloadData()
+//                    }
+//                }
+//                catch {}
+//            }
+//        }
+//        task.resume()
+//    }
     
     //MARK: life cycle
     override func viewDidLoad() {
@@ -41,7 +41,14 @@ class ViewController: UIViewController {
 
         TableViewMain.delegate = self
         TableViewMain.dataSource = self
-        fetchNews()
+//        fetchNews()
+        
+        //TODO: API로 취득하는 뉴스취득처리를 분리하여 서비스로 만들었습니다. 요걸로 바꿔주세요
+        let service = NewsService()
+        service.fetchInternationalNews(countryCode: "kr") { (success, articles) in
+            print(articles)
+        }
+        
     }
 }
 
