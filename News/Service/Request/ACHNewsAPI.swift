@@ -33,23 +33,44 @@ final class ACHNewsAPI {
         }
     }
     
+    struct KeywordNewsRequest : ACHNewsRequest {
+
+        let keyword: String
+        
+        typealias Response = NewsResponse<Article>
+
+        var method: HTTPMethod {
+            return .get
+        }
+
+        var path: String {
+            return "/v2/everything"
+        }
+
+        var queryItems: [URLQueryItem] {
+            return [
+                URLQueryItem(name: "q", value: keyword),
+                URLQueryItem(name: "apiKey", value: apiKey)]
+        }
+    }
+    
+    struct NewsProviderRequest : ACHNewsRequest {
+        
+        typealias Response = NewsProviderResponse<Source>
+
+        var method: HTTPMethod {
+            return .get
+        }
+
+        var path: String {
+            return "/v2/sources"
+        }
+
+        var queryItems: [URLQueryItem] {
+            return [
+                URLQueryItem(name: "apiKey", value: apiKey)]
+        }
+    }
+    
     //TODO: Add request struct
-//    struct XXXXRequest : ACHNewsRequest {
-//
-//        typealias Response = XXXResponse<>
-//
-//        var method: HTTPMethod {
-//            return .get
-//        }
-//
-//        var path: String {
-//            return ""
-//        }
-//
-//        var queryItems: [URLQueryItem] {
-//            return [
-//                URLQueryItem(name: "", value: ""),
-//                URLQueryItem(name: "apiKey", value: apiKey)]
-//        }
-//    }
 }
