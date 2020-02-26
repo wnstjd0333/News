@@ -6,7 +6,7 @@
 //  Copyright © 2020 kimjunseong. All rights reserved.
 //
 
-import TinyConstraints
+import UIKit
 
 class ViewController: UIViewController {
     
@@ -22,17 +22,24 @@ class ViewController: UIViewController {
         let x = scrollView.frame.size.width * CGFloat(sender.selectedSegmentIndex)
         scrollView.setContentOffset(CGPoint(x: x, y:0), animated: true)
     }
-
+    
     var newsData = [Article]()
     var newsSource = [Source]()
     var service : NewsService?
     
     var tag = 0
     var cellIdentifier = ""
-    
+        
     //MARK: life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        topHeading.rowHeight = UITableView.automaticDimension
+        topHeading.estimatedRowHeight = 400
+        everything.rowHeight = UITableView.automaticDimension
+        everything.estimatedRowHeight = 400
+        source.rowHeight = UITableView.automaticDimension
+        source.estimatedRowHeight = UITableView.automaticDimension
         
         topHeading.delegate = self
         topHeading.dataSource = self
@@ -116,17 +123,19 @@ class ViewController: UIViewController {
             cellIdentifier = "SourceTableViewCell"
         }
     }
+    
 }
 
 //MARK: UITableViewDataSource
 extension ViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         checkTableView(tableView)
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath as IndexPath)
         
         if cellIdentifier == "SourceTableViewCell" {
             cell.textLabel?.text = newsSource[indexPath.row].name
-            
+                
         } else {
             cell.textLabel?.text = newsData[indexPath.row].title
 
@@ -139,9 +148,14 @@ extension ViewController : UITableViewDataSource {
         checkTableView(tableView)
         if cellIdentifier == "SourceTableViewCell" {
             return newsSource.count
+        } else {
+            return newsData.count
+
         }
-        
-        return newsData.count
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        tableView.estimatedRowHeight = 40
+        return UITableView.automaticDimension
     }
 }
 
@@ -169,3 +183,5 @@ extension ViewController : UIScrollViewDelegate {
     }
 
 }
+
+
