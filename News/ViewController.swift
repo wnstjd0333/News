@@ -24,7 +24,11 @@ class ViewController: UIViewController {
     }
 
     var newsData = [Article]()
+    var newsSource = [Source]()
     var service : NewsService?
+    
+    var tag = 0
+    var cellIdentifier = ""
     
     //MARK: life cycle
     override func viewDidLoad() {
@@ -32,14 +36,14 @@ class ViewController: UIViewController {
         
         topHeading.delegate = self
         topHeading.dataSource = self
+        everything.delegate = self
+        everything.dataSource = self
+        source.delegate = self
+        source.dataSource = self
         scrollView.delegate = self
               
-        print("1111")
-        //TODO: API로 취득하는 뉴스취득처리를 분리하여 서비스로 만들었습니다. 요걸로 바꿔주세요
         service = NewsService()
         service?.fetchInternationalNews(countryCode: "kr") { (success, articles) in
-            print("2222")
-            
             if !success {
                 print("fail")
                 return
@@ -55,32 +59,95 @@ class ViewController: UIViewController {
 //            for article in items {
 //                print(article.author)
 //            }
-            
-            
+
             DispatchQueue.main.async {
                 self.topHeading.reloadData()
             }
             
         }
-        print("3333")
+        service?.fetchKeywordNews(keyword: "bitcoin") { (success, articles) in
+            if !success {
+                print("fail")
+                return
+            }
+                    
+            guard let items = articles else {
+                print("no data!")
+                return
+            }
+                    
+            self.newsData = items
+
+            DispatchQueue.main.async {
+                self.everything.reloadData()
+            }
+        }
+        
+        service?.fetchNewsProviders { (success, sources) in
+            if !success {
+                print("fail")
+                return
+            }
+                    
+            guard let items = sources else {
+                print("no data!")
+                return
+            }
+            
+            self.newsSource = items
+            
+            DispatchQueue.main.async {
+                self.source.reloadData()
+            }
+        }
+    }
+    
+    func checkTableView(_ tableView: UITableView) {
+        if tableView.tag == 0 {
+            tag = 0
+            cellIdentifier = "TopHeadingTableViewCell"
+        }
+        else if tableView.tag == 1 {
+            tag = 1
+            cellIdentifier = "EverythingTableViewCell"
+        }
+        else if tableView.tag == 2{
+            tag = 2
+            cellIdentifier = "SourceTableViewCell"
+        }
     }
 }
 
 //MARK: UITableViewDataSource
 extension ViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = topHeading.dequeueReusableCell(withIdentifier: "NewsTableViewCell") as! NewsTableViewCell
-        cell.LabelText.text = newsData[indexPath.row].title
+        checkTableView(tableView)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath as IndexPath)
+        
+        if cellIdentifier == "SourceTableViewCell" {
+            cell.textLabel?.text = newsSource[indexPath.row].name
+            
+        } else {
+            cell.textLabel?.text = newsData[indexPath.row].title
+
+        }
+        
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        checkTableView(tableView)
+        if cellIdentifier == "SourceTableViewCell" {
+            return newsSource.count
+        }
+        
         return newsData.count
     }
 }
 
 //MARK: UITableViewDelegate
 extension ViewController : UITableViewDelegate {
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let id = segue.identifier, "NewsDetail" == id {
             if let controller = segue.destination as? NewsDetailController{
