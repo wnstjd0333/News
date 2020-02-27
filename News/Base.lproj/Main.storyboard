@@ -39,7 +39,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="616"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopHeadingTableViewCell" rowHeight="28" id="R9r-W5-uhy" userLabel="TopHeadingTableViewCell" customClass="TopHeadingTableViewCell" customModule="News" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopHeadingTableViewCell" rowHeight="28" id="R9r-W5-uhy" userLabel="TopHeadingTableViewCell" customClass="NewsTableViewCell" customModule="News" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="414" height="28"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="R9r-W5-uhy" id="Sj9-tL-di6">
@@ -71,7 +71,7 @@
                                                 <rect key="frame" x="414" y="0.0" width="414" height="616"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EverythingTableViewCell" rowHeight="70" id="zU4-Ka-4cG" customClass="EverythingTableViewCell" customModule="News" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EverythingTableViewCell" rowHeight="70" id="zU4-Ka-4cG" customClass="NewsTableViewCell" customModule="News" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="414" height="70"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zU4-Ka-4cG" id="C4g-O7-arx">
@@ -93,7 +93,7 @@
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <connections>
-                                                            <outlet property="everythingLabelText" destination="CvR-uU-ZcC" id="NCe-o0-NBI"/>
+                                                            <outlet property="everythingLabelText" destination="CvR-uU-ZcC" id="gYU-el-Qo2"/>
                                                         </connections>
                                                     </tableViewCell>
                                                 </prototypes>
@@ -102,7 +102,7 @@
                                                 <rect key="frame" x="828" y="0.0" width="414" height="616"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SourceTableViewCell" rowHeight="74" id="O1X-5Z-j8E" customClass="SourceTableViewCell" customModule="News" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SourceTableViewCell" rowHeight="74" id="O1X-5Z-j8E" customClass="NewsTableViewCell" customModule="News" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="414" height="74"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="O1X-5Z-j8E" id="XCa-Y6-XRV">
@@ -127,7 +127,7 @@
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <connections>
-                                                            <outlet property="sourceLabelText" destination="PWt-Zn-wEV" id="4KF-Gf-XUb"/>
+                                                            <outlet property="sourceLabelText" destination="PWt-Zn-wEV" id="IaL-oh-gcE"/>
                                                         </connections>
                                                     </tableViewCell>
                                                 </prototypes>

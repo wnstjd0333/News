@@ -34,13 +34,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        topHeading.rowHeight = UITableView.automaticDimension
-        topHeading.estimatedRowHeight = 400
-        everything.rowHeight = UITableView.automaticDimension
-        everything.estimatedRowHeight = 400
-        source.rowHeight = UITableView.automaticDimension
-        source.estimatedRowHeight = UITableView.automaticDimension
-        
         topHeading.delegate = self
         topHeading.dataSource = self
         everything.delegate = self
@@ -70,7 +63,6 @@ class ViewController: UIViewController {
             DispatchQueue.main.async {
                 self.topHeading.reloadData()
             }
-            
         }
         service?.fetchKeywordNews(keyword: "bitcoin") { (success, articles) in
             if !success {
@@ -107,23 +99,31 @@ class ViewController: UIViewController {
                 self.source.reloadData()
             }
         }
+        
+        topHeading.rowHeight = UITableView.automaticDimension
+        topHeading.estimatedRowHeight = 400
+        everything.rowHeight = UITableView.automaticDimension
+        everything.estimatedRowHeight = 400
+        source.rowHeight = UITableView.automaticDimension
+        source.estimatedRowHeight = 400
+        
     }
     
     func checkTableView(_ tableView: UITableView) {
-        if tableView.tag == 0 {
+        switch tableView.tag {
+        case 0:
             tag = 0
             cellIdentifier = "TopHeadingTableViewCell"
-        }
-        else if tableView.tag == 1 {
+        case 1:
             tag = 1
             cellIdentifier = "EverythingTableViewCell"
-        }
-        else if tableView.tag == 2{
+        case 2:
             tag = 2
             cellIdentifier = "SourceTableViewCell"
+        default:
+            print("error")
         }
     }
-    
 }
 
 //MARK: UITableViewDataSource
@@ -131,16 +131,16 @@ extension ViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         checkTableView(tableView)
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath as IndexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! NewsTableViewCell
         
         if cellIdentifier == "SourceTableViewCell" {
             cell.textLabel?.text = newsSource[indexPath.row].name
-                
-        } else {
+        }
+        else {
             cell.textLabel?.text = newsData[indexPath.row].title
-
         }
         
+        cell.textLabel?.textColor = UIColor(red: 0.75, green: 0.75, blue: 0.75, alpha: 1.0)
         return cell
     }
     
@@ -152,10 +152,6 @@ extension ViewController : UITableViewDataSource {
             return newsData.count
 
         }
-    }
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        tableView.estimatedRowHeight = 40
-        return UITableView.automaticDimension
     }
 }
 

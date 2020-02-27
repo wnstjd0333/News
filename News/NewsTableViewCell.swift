@@ -7,8 +7,9 @@
 //
 
 import UIKit
-class TopHeadingTableViewCell: UITableViewCell {
+class NewsTableViewCell: UITableViewCell {
         
     @IBOutlet weak var topHeadingLabelText: UILabel!
-    
+    @IBOutlet weak var everythingLabelText: UILabel!
+    @IBOutlet weak var sourceLabelText: UILabel!
 }
