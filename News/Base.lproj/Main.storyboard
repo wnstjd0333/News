@@ -61,7 +61,7 @@
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <connections>
-                                                            <outlet property="topHeadingLabelText" destination="NCO-EA-obZ" id="x1G-7p-VTt"/>
+                                                            <outlet property="contentTextLabel" destination="NCO-EA-obZ" id="tb3-f3-a5d"/>
                                                             <segue destination="4XX-VF-6Z1" kind="show" identifier="NewsDetail" id="gMv-0s-rGd"/>
                                                         </connections>
                                                     </tableViewCell>
@@ -93,7 +93,7 @@
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <connections>
-                                                            <outlet property="everythingLabelText" destination="CvR-uU-ZcC" id="gYU-el-Qo2"/>
+                                                            <outlet property="contentTextLabel" destination="CvR-uU-ZcC" id="83C-qm-FVY"/>
                                                         </connections>
                                                     </tableViewCell>
                                                 </prototypes>
@@ -127,7 +127,7 @@
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <connections>
-                                                            <outlet property="sourceLabelText" destination="PWt-Zn-wEV" id="IaL-oh-gcE"/>
+                                                            <outlet property="contentTextLabel" destination="PWt-Zn-wEV" id="mF2-6C-7tx"/>
                                                         </connections>
                                                     </tableViewCell>
                                                 </prototypes>
@@ -161,7 +161,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Xlu-L5-BWh"/>
                     <connections>
-                        <outlet property="everything" destination="0YB-UN-aDt" id="rSj-NP-A4c"/>
+                        <outlet property="everything" destination="0YB-UN-aDt" id="dl8-ym-J6e"/>
                         <outlet property="scrollView" destination="fve-z2-DXP" id="slc-6D-fvq"/>
                         <outlet property="source" destination="F21-Pg-lOf" id="fve-ol-eep"/>
                         <outlet property="switchSegment" destination="YXJ-dv-oJF" id="foj-be-48a"/>
