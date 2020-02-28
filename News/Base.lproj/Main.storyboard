@@ -7,14 +7,18 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="News" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="News" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="wYl-Fl-lPA">
+                                <rect key="frame" x="187" y="349" width="39" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </pageControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="YXJ-dv-oJF">
                                 <rect key="frame" x="66.666666666666686" y="60" width="281" height="45"/>
                                 <constraints>
@@ -26,7 +30,7 @@
                                     <segment title="Source"/>
                                 </segments>
                                 <connections>
-                                    <action selector="switchViews:" destination="BYZ-38-t0r" eventType="valueChanged" id="LCt-qO-0Ij"/>
+                                    <action selector="newsSwitchControlTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="zYN-o7-U1Z"/>
                                 </connections>
                             </segmentedControl>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fve-z2-DXP">
@@ -35,7 +39,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="jSL-vY-4UQ">
                                         <rect key="frame" x="0.0" y="0.0" width="1242" height="616"/>
                                         <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="P7K-si-4vB" userLabel="topHeading">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="P7K-si-4vB" userLabel="topHeadingTableView">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="616"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <prototypes>
@@ -67,7 +71,7 @@
                                                     </tableViewCell>
                                                 </prototypes>
                                             </tableView>
-                                            <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0YB-UN-aDt" userLabel="everything">
+                                            <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0YB-UN-aDt" userLabel="everythingTableView">
                                                 <rect key="frame" x="414" y="0.0" width="414" height="616"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <prototypes>
@@ -98,7 +102,7 @@
                                                     </tableViewCell>
                                                 </prototypes>
                                             </tableView>
-                                            <tableView clipsSubviews="YES" tag="2" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="F21-Pg-lOf" userLabel="source">
+                                            <tableView clipsSubviews="YES" tag="2" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="F21-Pg-lOf" userLabel="sourceTableView">
                                                 <rect key="frame" x="828" y="0.0" width="414" height="616"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <prototypes>
@@ -161,11 +165,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="Xlu-L5-BWh"/>
                     <connections>
-                        <outlet property="everything" destination="0YB-UN-aDt" id="dl8-ym-J6e"/>
-                        <outlet property="scrollView" destination="fve-z2-DXP" id="slc-6D-fvq"/>
-                        <outlet property="source" destination="F21-Pg-lOf" id="fve-ol-eep"/>
-                        <outlet property="switchSegment" destination="YXJ-dv-oJF" id="foj-be-48a"/>
-                        <outlet property="topHeading" destination="P7K-si-4vB" id="GGz-pJ-UxF"/>
+                        <outlet property="MainPageControl" destination="wYl-Fl-lPA" id="7yY-1O-fBd"/>
+                        <outlet property="everythingTableView" destination="0YB-UN-aDt" id="rfq-EH-G2z"/>
+                        <outlet property="mainScrollView" destination="fve-z2-DXP" id="bZi-0C-SGe"/>
+                        <outlet property="newsSegmentControl" destination="YXJ-dv-oJF" id="fRW-ua-fAO"/>
+                        <outlet property="sourceTableView" destination="F21-Pg-lOf" id="aKW-pm-EUp"/>
+                        <outlet property="topHeadingTableView" destination="P7K-si-4vB" id="810-iN-yAu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

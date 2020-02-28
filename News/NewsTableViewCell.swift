@@ -10,4 +10,11 @@ import UIKit
 class NewsTableViewCell: UITableViewCell {
         
     @IBOutlet weak var contentTextLabel: UILabel!
+    
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        contentTextLabel.text = nil
+//
+//    }
+    
 }

@@ -24,7 +24,7 @@
 		F71579B823FFEC9D00503701 /* NewsProviderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71579B723FFEC9D00503701 /* NewsProviderResponse.swift */; };
 		F739DD9F23F3B91B00FCD714 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F739DD9E23F3B91B00FCD714 /* AppDelegate.swift */; };
 		F739DDA123F3B91B00FCD714 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F739DDA023F3B91B00FCD714 /* SceneDelegate.swift */; };
-		F739DDA323F3B91B00FCD714 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F739DDA223F3B91B00FCD714 /* ViewController.swift */; };
+		F739DDA323F3B91B00FCD714 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F739DDA223F3B91B00FCD714 /* MainViewController.swift */; };
 		F739DDA623F3B91B00FCD714 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F739DDA423F3B91B00FCD714 /* Main.storyboard */; };
 		F739DDA823F3B91C00FCD714 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F739DDA723F3B91C00FCD714 /* Assets.xcassets */; };
 		F739DDAB23F3B91C00FCD714 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F739DDA923F3B91C00FCD714 /* LaunchScreen.storyboard */; };
@@ -67,7 +67,7 @@
 		F739DD9B23F3B91B00FCD714 /* News.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = News.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F739DD9E23F3B91B00FCD714 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F739DDA023F3B91B00FCD714 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F739DDA223F3B91B00FCD714 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F739DDA223F3B91B00FCD714 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F739DDA523F3B91B00FCD714 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F739DDA723F3B91C00FCD714 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F739DDAA23F3B91C00FCD714 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -202,7 +202,7 @@
 				B8980E9023FBBD16000E2C21 /* Service */,
 				F739DD9E23F3B91B00FCD714 /* AppDelegate.swift */,
 				F739DDA023F3B91B00FCD714 /* SceneDelegate.swift */,
-				F739DDA223F3B91B00FCD714 /* ViewController.swift */,
+				F739DDA223F3B91B00FCD714 /* MainViewController.swift */,
 				F739DDA423F3B91B00FCD714 /* Main.storyboard */,
 				F739DDA723F3B91C00FCD714 /* Assets.xcassets */,
 				F739DDA923F3B91C00FCD714 /* LaunchScreen.storyboard */,
@@ -392,7 +392,7 @@
 			files = (
 				B8980EAC23FBBD7C000E2C21 /* ACHNewsClient.swift in Sources */,
 				B8980E9F23FBBD17000E2C21 /* NewsResponse.swift in Sources */,
-				F739DDA323F3B91B00FCD714 /* ViewController.swift in Sources */,
+				F739DDA323F3B91B00FCD714 /* MainViewController.swift in Sources */,
 				B8980EA323FBBD17000E2C21 /* HTTPMethod.swift in Sources */,
 				B8980EA223FBBD17000E2C21 /* ACHNewsAPI.swift in Sources */,
 				F77FEB3123FA71B300BDA8D7 /* NewsDetailController.swift in Sources */,
