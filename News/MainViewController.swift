@@ -21,11 +21,13 @@ class MainViewController: UIViewController {
     
     @IBAction func newsSwitchControlTapped(_ sender: UISegmentedControl) {
         
-//        let x = mainScrollView.frame.size.width * CGFloat(sender.selectedSegmentIndex)
-//        mainScrollView.setContentOffset(CGPoint(x: x, y:0), animated: true)
+        let x = Int(mainScrollView.frame.size.width * CGFloat(sender.selectedSegmentIndex))
+        mainScrollView.setContentOffset(CGPoint(x: x, y:0), animated: false)
+
     }
     
     var internationalData = [Article]()
+    var keywardData = [Article]()
     var providerData = [Source]()
     var service : NewsService?
     
@@ -76,7 +78,7 @@ class MainViewController: UIViewController {
                 return
             }
                     
-            self.internationalData = items
+            self.keywardData = items
 
             DispatchQueue.main.async {
                 self.everythingTableView.reloadData()
@@ -133,14 +135,12 @@ extension MainViewController : UITableViewDataSource {
         let cellIndentifier = checkTableView(tableView)
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIndentifier, for: indexPath) as! NewsTableViewCell
         
-        if newsSegmentControl.selectedSegmentIndex == 2 {
+        if cellIndentifier == "TopHeadingTableViewCell" {
+            cell.contentTextLabel.text = internationalData[indexPath.row].title
+        } else if cellIndentifier == "EverythingTableViewCell"  {
+            cell.contentTextLabel.text = keywardData[indexPath.row].title
+        } else {
             cell.contentTextLabel.text = providerData[indexPath.row].name
-
-        } else if newsSegmentControl.selectedSegmentIndex == 1{
-            cell.contentTextLabel.text = internationalData[indexPath.row].title
-
-        } else if newsSegmentControl.selectedSegmentIndex == 0{
-            cell.contentTextLabel.text = internationalData[indexPath.row].title
         }
         
         return cell
@@ -150,7 +150,7 @@ extension MainViewController : UITableViewDataSource {
         if newsSegmentControl.selectedSegmentIndex == 2 {
             return providerData.count
         } else if newsSegmentControl.selectedSegmentIndex == 1{
-            return internationalData.count
+            return keywardData.count
         } else {
             return internationalData.count
         }
@@ -170,26 +170,25 @@ extension MainViewController : UITableViewDelegate {
 }
 
 extension MainViewController : UIScrollViewDelegate {
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//
-//        let pageWidth = self.mainScrollView.frame.size.width
-//        let fractionalPage = Double(self.mainScrollView.contentOffset.x / pageWidth)
-//        let page = lround(fractionalPage)
-//        self.MainPageControl.currentPage = page
-//
-//        if MainPageControl.currentPage == 0{
-//            newsSegmentControl.selectedSegmentIndex = 0
-//            topHeadingTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-//
-//        } else if MainPageControl.currentPage == 1 {
-//            newsSegmentControl.selectedSegmentIndex = 1
-//            everythingTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-//
-//        } else {
-//            newsSegmentControl.selectedSegmentIndex = 2
-//            sourceTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-//        }
-//    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+
+        let pageWidth = mainScrollView.frame.size.width
+        let fractionalPage = mainScrollView.contentOffset.x / pageWidth
+        MainPageControl.currentPage = Int(fractionalPage)
+
+        if MainPageControl.currentPage == 0{
+            newsSegmentControl.selectedSegmentIndex = 0
+            topHeadingTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+
+        } else if MainPageControl.currentPage == 1 {
+            newsSegmentControl.selectedSegmentIndex = 1
+            everythingTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+
+        } else {
+            newsSegmentControl.selectedSegmentIndex = 2
+            sourceTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
+    }
 }
 
 
