@@ -102,8 +102,21 @@ class MainViewController: UIViewController {
                 self.sourceTableView.reloadData()
             }
         }
+        
+        
+        //REMARK: テスト
+        let barbutton = UIBarButtonItem(title: "てすと", style: .plain, target: self, action: #selector(testButtonTouched(sender:)))
+        self.navigationItem.rightBarButtonItem = barbutton
     }
    
+    //REMARK: テスト
+    @objc func testButtonTouched(sender: UIBarButtonItem) {
+        let detailVC = NewsDetailViewController(nibName: "NewsDetailViewController", bundle: nil)
+        
+        detailVC.delegate = self
+        present(detailVC, animated: true, completion: nil)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let id = segue.identifier, "NewsDetail" == id {
             if let controller = segue.destination as? NewsDetailController{
@@ -191,4 +204,8 @@ extension MainViewController : UIScrollViewDelegate {
     }
 }
 
-
+extension MainViewController: NewsDetailViewControllerDelegate {
+    func getNewsItems() -> [Article]? {
+        return keywardData
+    }
+}
