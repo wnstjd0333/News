@@ -9,12 +9,18 @@
 import UIKit
 class NewsTableViewCell: UITableViewCell {
         
-    @IBOutlet weak var contentTextLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var newsDescriptionLabel: UILabel!
+    @IBOutlet weak var publishedAtLabel: UILabel!
+    @IBOutlet weak var sourceLabel: UILabel!
+    @IBOutlet weak var urlToImage: UIImageView!
     
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//        contentTextLabel.text = nil
-//
-//    }
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var countryLabel: UILabel!
+    @IBOutlet weak var languageLabel: UILabel!
+    @IBOutlet weak var sourceDescription: UILabel!
+    
+    var finishReload: Bool = false
+
     
 }

@@ -23,7 +23,18 @@ class MainViewController: UIViewController {
         
         let x = Int(mainScrollView.frame.size.width * CGFloat(sender.selectedSegmentIndex))
         mainScrollView.setContentOffset(CGPoint(x: x, y:0), animated: false)
-
+        
+        if newsSegmentControl.selectedSegmentIndex == 0 {
+            topHeadingTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            
+        } else if newsSegmentControl.selectedSegmentIndex == 1 {
+            everythingTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        
+        } else {
+            sourceTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            
+        }
+        
     }
     
     var internationalData = [Article]()
@@ -102,20 +113,17 @@ class MainViewController: UIViewController {
                 self.sourceTableView.reloadData()
             }
         }
-        
-        
-        //REMARK: テスト
-        let barbutton = UIBarButtonItem(title: "てすと", style: .plain, target: self, action: #selector(testButtonTouched(sender:)))
-        self.navigationItem.rightBarButtonItem = barbutton
+    
+//        let barbutton = UIBarButtonItem(title: "てすと", style: .plain, target: self, action: #selector(testButtonTouched(sender:)))
+//        self.navigationItem.rightBarButtonItem = barbutton
     }
-   
-    //REMARK: テスト
-    @objc func testButtonTouched(sender: UIBarButtonItem) {
-        let detailVC = NewsDetailViewController(nibName: "NewsDetailViewController", bundle: nil)
-        
-        detailVC.delegate = self
-        present(detailVC, animated: true, completion: nil)
-    }
+//
+//    @objc func testButtonTouched(sender: UIBarButtonItem) {
+//        let detailVC = NewsDetailViewController(nibName: "NewsDetailViewController", bundle: nil)
+//
+//        detailVC.delegate = self
+//        present(detailVC, animated: true, completion: nil)
+//    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let id = segue.identifier, "NewsDetail" == id {
@@ -149,23 +157,53 @@ extension MainViewController : UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIndentifier, for: indexPath) as! NewsTableViewCell
         
         if cellIndentifier == "TopHeadingTableViewCell" {
-            cell.contentTextLabel.text = internationalData[indexPath.row].title
+            cell.titleLabel.text = internationalData[indexPath.row].title
+            cell.publishedAtLabel.text = internationalData[indexPath.row].publishedAt
+        
+        //TODO : Article의 구조체 Source의 이름 불러오기
+            cell.sourceLabel.text =  "   " + (internationalData[indexPath.row].author ?? "익명")
+            cell.newsDescriptionLabel.text = internationalData[indexPath.row].description
+            
+            if let data = try? Data(contentsOf:
+                URL(string: internationalData[indexPath.row].urlToImage ?? "nil")!){                        cell.urlToImage.image = UIImage(data: data)
+                
+        //TODO : 이미지 중복 불림 해결하기.
+                
+//                if cell.finishReload == false {
+//                    cell.finishReload = true
+//                    topHeadingTableView.beginUpdates()
+//                    topHeadingTableView.reloadRows(at: [IndexPath.init(row: indexPath.row, section: 0)], with: UITableView.RowAnimation.automatic)
+//                    topHeadingTableView.endUpdates()
+//                }
+            }
+            
+
         } else if cellIndentifier == "EverythingTableViewCell"  {
-            cell.contentTextLabel.text = keywardData[indexPath.row].title
+            cell.titleLabel.text = keywardData[indexPath.row].title
+            cell.publishedAtLabel.text = keywardData[indexPath.row].publishedAt
+            cell.sourceLabel.text =  "   " + (keywardData[indexPath.row].author ?? "익명")
+            cell.newsDescriptionLabel.text = keywardData[indexPath.row].description
+            if let data = try? Data(contentsOf:
+            URL(string: keywardData[indexPath.row].urlToImage ?? "nil")!){                        cell.urlToImage.image = UIImage(data: data)
+            }
+
         } else {
-            cell.contentTextLabel.text = providerData[indexPath.row].name
+            cell.nameLabel.text = providerData[indexPath.row].name
+            cell.sourceDescription.text = providerData[indexPath.row].description
+            cell.languageLabel.text = "Language: " + (providerData[indexPath.row].language ?? "")
+            cell.countryLabel.text = "Country: " + (providerData[indexPath.row].country ?? "")
         }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if newsSegmentControl.selectedSegmentIndex == 2 {
-            return providerData.count
-        } else if newsSegmentControl.selectedSegmentIndex == 1{
+        if tableView == topHeadingTableView {
+            return internationalData.count
+        } else if tableView == everythingTableView {
             return keywardData.count
         } else {
-            return internationalData.count
+            return providerData.count
         }
     }
 }
@@ -184,22 +222,18 @@ extension MainViewController : UITableViewDelegate {
 
 extension MainViewController : UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-
         let pageWidth = mainScrollView.frame.size.width
         let fractionalPage = mainScrollView.contentOffset.x / pageWidth
         MainPageControl.currentPage = Int(fractionalPage)
-
-        if MainPageControl.currentPage == 0{
+        
+        if MainPageControl.currentPage == 0 {
             newsSegmentControl.selectedSegmentIndex = 0
-            topHeadingTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
 
         } else if MainPageControl.currentPage == 1 {
             newsSegmentControl.selectedSegmentIndex = 1
-            everythingTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
 
         } else {
             newsSegmentControl.selectedSegmentIndex = 2
-            sourceTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }
     }
 }
