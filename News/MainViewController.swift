@@ -12,11 +12,8 @@ class MainViewController: UIViewController {
     @IBOutlet weak var topHeadingTableView: UITableView!
     @IBOutlet weak var everythingTableView: UITableView!
     @IBOutlet weak var sourceTableView: UITableView!
-    
     @IBOutlet weak var mainScrollView: UIScrollView!
-    
     @IBOutlet weak var newsSegmentControl: UISegmentedControl!
-    
     @IBOutlet weak var MainPageControl: UIPageControl!
     
     @IBAction func newsSwitchControlTapped(_ sender: UISegmentedControl) {
@@ -32,18 +29,14 @@ class MainViewController: UIViewController {
         
         } else {
             sourceTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            
         }
-        
     }
     
     var internationalData = [Article]()
     var keywardData = [Article]()
     var providerData = [Source]()
     var service : NewsService?
-    
-    var tag = 0
-        
+            
     //MARK: life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,13 +53,11 @@ class MainViewController: UIViewController {
         
         service = NewsService()
         service?.fetchInternationalNews(countryCode: "kr") { (success, articles) in
-            if !success {
-                print("fail")
+            if !success { print("fail")
                 return
             }
             
-            guard let items = articles else {
-                print("no data!")
+            guard let items = articles else { print("no data!")
                 return
             }
             
@@ -74,18 +65,15 @@ class MainViewController: UIViewController {
 
             DispatchQueue.main.async {
                 self.topHeadingTableView.reloadData()
-               
             }
         }
         
         service?.fetchKeywordNews(keyword: "bitcoin") { (success, articles) in
-            if !success {
-                print("fail")
+            if !success { print("fail")
                 return
             }
                     
-            guard let items = articles else {
-                print("no data!")
+            guard let items = articles else { print("no data!")
                 return
             }
                     
@@ -97,13 +85,11 @@ class MainViewController: UIViewController {
         }
         
         service?.fetchNewsProviders { (success, sources) in
-            if !success {
-                print("fail")
+            if !success { print("fail")
                 return
             }
                     
-            guard let items = sources else {
-                print("no data!")
+            guard let items = sources else { print("no data!")
                 return
             }
     
@@ -117,25 +103,13 @@ class MainViewController: UIViewController {
 //        let barbutton = UIBarButtonItem(title: "てすと", style: .plain, target: self, action: #selector(testButtonTouched(sender:)))
 //        self.navigationItem.rightBarButtonItem = barbutton
     }
-//
+
 //    @objc func testButtonTouched(sender: UIBarButtonItem) {
 //        let detailVC = NewsDetailViewController(nibName: "NewsDetailViewController", bundle: nil)
 //
 //        detailVC.delegate = self
 //        present(detailVC, animated: true, completion: nil)
 //    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let id = segue.identifier, "NewsDetail" == id {
-            if let controller = segue.destination as? NewsDetailController{
-                if let indexPath = topHeadingTableView.indexPathForSelectedRow{
-                    let row = internationalData[indexPath.row]
-                    controller.imageUrl = row.urlToImage
-                    controller.desc = row.description
-                }
-            }
-        }
-    }
         
     func checkTableView(_ tableView: UITableView) -> String {
         if tableView == topHeadingTableView {
@@ -169,11 +143,11 @@ extension MainViewController : UITableViewDataSource {
                 
         //TODO : 이미지 중복 불림 해결하기.
                 
-//                if cell.finishReload == false {
-//                    cell.finishReload = true
-//                    topHeadingTableView.beginUpdates()
-//                    topHeadingTableView.reloadRows(at: [IndexPath.init(row: indexPath.row, section: 0)], with: UITableView.RowAnimation.automatic)
-//                    topHeadingTableView.endUpdates()
+//            if cell.finishReload == false {
+//                cell.finishReload = true
+//                topHeadingTableView.beginUpdates()
+//                topHeadingTableView.reloadRows(at: [IndexPath.init(row: indexPath.row, section: 0)], with: UITableView.RowAnimation.automatic)
+//                topHeadingTableView.endUpdates()
 //                }
             }
             
@@ -205,6 +179,29 @@ extension MainViewController : UITableViewDataSource {
         } else {
             return providerData.count
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(identifier: "NewsDetailViewController") as! NewsDetailViewController
+       
+        if tableView == topHeadingTableView {
+            let row = internationalData[indexPath.row]
+            controller.newsTitle = row.title
+            controller.author = row.author
+            controller.content = row.description
+            controller.publishedAt = row.publishedAt
+        } else if tableView == everythingTableView {
+            let row = keywardData[indexPath.row]
+            controller.newsTitle = row.title
+            controller.author = row.author
+            controller.content = row.description
+            controller.publishedAt = row.publishedAt
+        } else {
+            return
+        }
+        
+        present(controller, animated: true, completion: nil)
     }
 }
 
@@ -238,8 +235,3 @@ extension MainViewController : UIScrollViewDelegate {
     }
 }
 
-extension MainViewController: NewsDetailViewControllerDelegate {
-    func getNewsItems() -> [Article]? {
-        return keywardData
-    }
-}
