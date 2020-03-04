@@ -184,23 +184,11 @@ extension MainViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(identifier: "NewsDetailViewController") as! NewsDetailViewController
-       
-        if tableView == topHeadingTableView {
-            let row = internationalData[indexPath.row]
-            controller.newsTitle = row.title
-            controller.author = row.author
-            controller.content = row.description
-            controller.publishedAt = row.publishedAt
-        } else if tableView == everythingTableView {
-            let row = keywardData[indexPath.row]
-            controller.newsTitle = row.title
-            controller.author = row.author
-            controller.content = row.description
-            controller.publishedAt = row.publishedAt
-        } else {
+        
+        if tableView == sourceTableView {
             return
         }
-        
+        controller.delegate = self
         present(controller, animated: true, completion: nil)
     }
 }
@@ -232,6 +220,18 @@ extension MainViewController : UIScrollViewDelegate {
         } else {
             newsSegmentControl.selectedSegmentIndex = 2
         }
+    }
+}
+
+extension MainViewController : NewsDetailViewControllerDelegate {
+     func getNewsItems() -> [Article]? {
+        if newsSegmentControl.selectedSegmentIndex == 0 {
+            return internationalData
+        } else if newsSegmentControl.selectedSegmentIndex == 1 {
+            return keywardData
+        }
+        
+        return internationalData
     }
 }
 
