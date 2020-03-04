@@ -4,9 +4,119 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Country-->
+        <scene sceneID="8tF-UY-5WP">
+            <objects>
+                <viewController id="8Gl-21-afR" customClass="CountryCollectionViewController" customModule="News" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pcZ-zp-RhH">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6Kn-4p-LL4">
+                                <rect key="frame" x="0.0" y="44" width="414" height="562"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="GjH-9T-fnT">
+                                    <size key="itemSize" width="87" height="104"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CountryCollectionViewCell" id="iV2-db-esq" customClass="CountryCollectionViewCell" customModule="News" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="87" height="104"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="QwC-Aq-DKp">
+                                            <rect key="frame" x="0.0" y="0.0" width="87" height="104"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZHk-ZU-zUQ">
+                                                    <rect key="frame" x="15" y="20" width="57" height="45"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="45" id="O4o-v4-HBL"/>
+                                                        <constraint firstAttribute="width" constant="45" id="zWp-uO-erv"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p3S-aL-YxV">
+                                                    <rect key="frame" x="22.666666666666671" y="75" width="42" height="28"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="ZHk-ZU-zUQ" secondAttribute="trailing" constant="15" id="1gu-F2-mDH"/>
+                                                <constraint firstItem="ZHk-ZU-zUQ" firstAttribute="leading" secondItem="QwC-Aq-DKp" secondAttribute="leading" constant="15" id="P86-Pz-WwN"/>
+                                                <constraint firstItem="p3S-aL-YxV" firstAttribute="top" secondItem="ZHk-ZU-zUQ" secondAttribute="bottom" constant="10" id="Wf8-XF-zr6"/>
+                                                <constraint firstAttribute="bottom" secondItem="p3S-aL-YxV" secondAttribute="bottom" constant="1" id="aow-X6-EDZ"/>
+                                                <constraint firstItem="ZHk-ZU-zUQ" firstAttribute="top" secondItem="QwC-Aq-DKp" secondAttribute="top" constant="20" id="fJ0-jN-jVG"/>
+                                                <constraint firstItem="p3S-aL-YxV" firstAttribute="centerX" secondItem="QwC-Aq-DKp" secondAttribute="centerX" id="n2W-we-eSj"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="87" height="104"/>
+                                        <connections>
+                                            <outlet property="countryImageView" destination="ZHk-ZU-zUQ" id="cuw-Pp-276"/>
+                                            <outlet property="countryNameLabel" destination="p3S-aL-YxV" id="Fyi-Mh-AvF"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="8Gl-21-afR" id="WC2-xX-WhB"/>
+                                    <outlet property="delegate" destination="8Gl-21-afR" id="zwJ-lD-jrN"/>
+                                </connections>
+                            </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J8h-i7-2iv">
+                                <rect key="frame" x="80" y="646" width="100" height="50"/>
+                                <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="2b9-8V-QSg"/>
+                                    <constraint firstAttribute="height" constant="50" id="ddz-3q-rML"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Select"/>
+                                <connections>
+                                    <action selector="selectButtonTouched:" destination="8Gl-21-afR" eventType="touchUpInside" id="Vd5-p7-G3A"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KaO-F7-jgW">
+                                <rect key="frame" x="234" y="646" width="100" height="50"/>
+                                <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="65b-Es-viG"/>
+                                    <constraint firstAttribute="width" constant="100" id="rTJ-aR-1dE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="cancelButtonTouched:" destination="8Gl-21-afR" eventType="touchUpInside" id="Keg-px-jIG"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Tf9-PV-UOG" firstAttribute="bottom" secondItem="J8h-i7-2iv" secondAttribute="bottom" constant="40" id="09I-1s-9TB"/>
+                            <constraint firstItem="Tf9-PV-UOG" firstAttribute="trailing" secondItem="KaO-F7-jgW" secondAttribute="trailing" constant="80" id="6W7-pb-9bv"/>
+                            <constraint firstItem="J8h-i7-2iv" firstAttribute="leading" secondItem="Tf9-PV-UOG" secondAttribute="leading" constant="80" id="DE2-Ga-75V"/>
+                            <constraint firstItem="6Kn-4p-LL4" firstAttribute="top" secondItem="Tf9-PV-UOG" secondAttribute="top" id="Lgw-XU-AfS"/>
+                            <constraint firstItem="Tf9-PV-UOG" firstAttribute="bottom" secondItem="KaO-F7-jgW" secondAttribute="bottom" constant="40" id="R6t-FQ-zs9"/>
+                            <constraint firstItem="Tf9-PV-UOG" firstAttribute="trailing" secondItem="6Kn-4p-LL4" secondAttribute="trailing" id="X32-r3-mKG"/>
+                            <constraint firstItem="6Kn-4p-LL4" firstAttribute="leading" secondItem="Tf9-PV-UOG" secondAttribute="leading" id="Zqg-Sz-keq"/>
+                            <constraint firstItem="J8h-i7-2iv" firstAttribute="top" secondItem="6Kn-4p-LL4" secondAttribute="bottom" constant="40" id="lGm-cM-B9v"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Tf9-PV-UOG"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Country" id="rhQ-6V-jdt"/>
+                    <connections>
+                        <outlet property="collectionView" destination="6Kn-4p-LL4" id="JJM-OR-0as"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qgM-Jz-ffC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1031.8840579710145" y="-589.4021739130435"/>
+        </scene>
         <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -297,13 +407,32 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Xlu-L5-BWh"/>
+                    <navigationItem key="navigationItem" id="Xlu-L5-BWh">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="J5a-qm-drs">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hmX-sF-wr2">
+                                <rect key="frame" x="302" y="7" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal" title="Country">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <segue destination="8Gl-21-afR" kind="show" identifier="Country" id="CY1-a8-n0z"/>
+                                </connections>
+                            </button>
+                            <connections>
+                                <action selector="countryButtonClicked:" destination="BYZ-38-t0r" id="Kg0-06-hxh"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="MainPageControl" destination="wYl-Fl-lPA" id="7yY-1O-fBd"/>
                         <outlet property="everythingTableView" destination="0YB-UN-aDt" id="rfq-EH-G2z"/>
                         <outlet property="mainScrollView" destination="fve-z2-DXP" id="bZi-0C-SGe"/>
                         <outlet property="newsSegmentControl" destination="YXJ-dv-oJF" id="fRW-ua-fAO"/>
                         <outlet property="sourceTableView" destination="F21-Pg-lOf" id="aKW-pm-EUp"/>
+                        <outlet property="toSelectCountryButton" destination="hmX-sF-wr2" id="82U-Iw-YX6"/>
                         <outlet property="topHeadingTableView" destination="P7K-si-4vB" id="810-iN-yAu"/>
                     </connections>
                 </viewController>

@@ -15,7 +15,14 @@ class MainViewController: UIViewController {
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var newsSegmentControl: UISegmentedControl!
     @IBOutlet weak var MainPageControl: UIPageControl!
+    @IBOutlet weak var toSelectCountryButton: UIButton!
     
+    var internationalData = [Article]()
+    var keywardData = [Article]()
+    var providerData = [Source]()
+    var service : NewsService?
+    
+    //MARK: action
     @IBAction func newsSwitchControlTapped(_ sender: UISegmentedControl) {
         
         let x = Int(mainScrollView.frame.size.width * CGFloat(sender.selectedSegmentIndex))
@@ -32,11 +39,10 @@ class MainViewController: UIViewController {
         }
     }
     
-    var internationalData = [Article]()
-    var keywardData = [Article]()
-    var providerData = [Source]()
-    var service : NewsService?
-            
+    @IBAction func countryButtonClicked(_ sender: Any) {
+        self.performSegue(withIdentifier: "Country", sender: nil)
+    }
+
     //MARK: life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,18 +105,8 @@ class MainViewController: UIViewController {
                 self.sourceTableView.reloadData()
             }
         }
-    
-//        let barbutton = UIBarButtonItem(title: "てすと", style: .plain, target: self, action: #selector(testButtonTouched(sender:)))
-//        self.navigationItem.rightBarButtonItem = barbutton
     }
 
-//    @objc func testButtonTouched(sender: UIBarButtonItem) {
-//        let detailVC = NewsDetailViewController(nibName: "NewsDetailViewController", bundle: nil)
-//
-//        detailVC.delegate = self
-//        present(detailVC, animated: true, completion: nil)
-//    }
-        
     func checkTableView(_ tableView: UITableView) -> String {
         if tableView == topHeadingTableView {
             return "TopHeadingTableViewCell"
@@ -234,4 +230,3 @@ extension MainViewController : NewsDetailViewControllerDelegate {
         return internationalData
     }
 }
-

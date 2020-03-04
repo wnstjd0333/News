@@ -31,6 +31,8 @@
 		F739DDB323F3D36F00FCD714 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F739DDB223F3D36F00FCD714 /* NewsTableViewCell.swift */; };
 		F78D354E240DF473003E2B13 /* NewsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78D354D240DF473003E2B13 /* NewsDetailViewController.swift */; };
 		F78D3550240DFAF5003E2B13 /* NewsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78D354F240DFAF5003E2B13 /* NewsDetailView.swift */; };
+		F78D3553240F3BDB003E2B13 /* CountryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78D3551240F3BDB003E2B13 /* CountryCollectionViewCell.swift */; };
+		F78D3556240F809D003E2B13 /* CountryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78D3555240F809D003E2B13 /* CountryCollectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +78,8 @@
 		F739DDB223F3D36F00FCD714 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		F78D354D240DF473003E2B13 /* NewsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetailViewController.swift; sourceTree = "<group>"; };
 		F78D354F240DFAF5003E2B13 /* NewsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetailView.swift; sourceTree = "<group>"; };
+		F78D3551240F3BDB003E2B13 /* CountryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCollectionViewCell.swift; sourceTree = "<group>"; };
+		F78D3555240F809D003E2B13 /* CountryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCollectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,8 +210,10 @@
 				F739DDA023F3B91B00FCD714 /* SceneDelegate.swift */,
 				F739DDA223F3B91B00FCD714 /* MainViewController.swift */,
 				F78D354D240DF473003E2B13 /* NewsDetailViewController.swift */,
+				F78D3555240F809D003E2B13 /* CountryCollectionViewController.swift */,
 				F739DDB223F3D36F00FCD714 /* NewsTableViewCell.swift */,
 				F739DDA423F3B91B00FCD714 /* Main.storyboard */,
+				F78D3551240F3BDB003E2B13 /* CountryCollectionViewCell.swift */,
 				F739DDA723F3B91C00FCD714 /* Assets.xcassets */,
 				F78D354F240DFAF5003E2B13 /* NewsDetailView.swift */,
 				F739DDA923F3B91C00FCD714 /* LaunchScreen.storyboard */,
@@ -398,6 +404,7 @@
 				F739DDA323F3B91B00FCD714 /* MainViewController.swift in Sources */,
 				B8980EA323FBBD17000E2C21 /* HTTPMethod.swift in Sources */,
 				B8980EA223FBBD17000E2C21 /* ACHNewsAPI.swift in Sources */,
+				F78D3556240F809D003E2B13 /* CountryCollectionViewController.swift in Sources */,
 				B8980EA023FBBD17000E2C21 /* Article.swift in Sources */,
 				B8980EA523FBBD17000E2C21 /* ACHNewsAPIError.swift in Sources */,
 				F71579B623FFEC1B00503701 /* Source.swift in Sources */,
@@ -407,6 +414,7 @@
 				F739DD9F23F3B91B00FCD714 /* AppDelegate.swift in Sources */,
 				B8980EBE23FBC9AD000E2C21 /* NewsService.swift in Sources */,
 				F71579B823FFEC9D00503701 /* NewsProviderResponse.swift in Sources */,
+				F78D3553240F3BDB003E2B13 /* CountryCollectionViewCell.swift in Sources */,
 				F739DDA123F3B91B00FCD714 /* SceneDelegate.swift in Sources */,
 				B8980EA423FBBD17000E2C21 /* ACHNewsRequest.swift in Sources */,
 				B8980EA623FBBD17000E2C21 /* ACHNewsClientError.swift in Sources */,
