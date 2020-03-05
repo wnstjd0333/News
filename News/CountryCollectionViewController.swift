@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
 class CountryCollectionViewController : UIViewController {
     
@@ -50,14 +51,14 @@ extension CountryCollectionViewController : UICollectionViewDelegate {
 }
 
 //MARK: UICollectionViewDataSource
-extension CountryCollectionViewController : UICollectionViewDataSource {
+extension CountryCollectionViewController : UICollectionViewDataSource, NVActivityIndicatorViewable {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return countries.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CountryCollectionViewCell", for: indexPath) as! CountryCollectionViewCell
-            
+        
         cell.countryNameLabel.text = countries[indexPath.item]
         cell.countryImageView.image = countryImages[indexPath.item]
         cell.layer.borderColor = UIColor.lightGray.cgColor
@@ -73,11 +74,17 @@ extension CountryCollectionViewController : UICollectionViewDataSource {
         cell.layer.borderColor = UIColor.gray.cgColor
         cell.layer.borderWidth = 2
         countryContainer = countries[indexPath.row]
+        startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding", type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1){
+            NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+        }
+  
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
         cell?.layer.borderColor = UIColor.lightGray.cgColor
         cell?.layer.borderWidth = 0.5
+
     }
 }

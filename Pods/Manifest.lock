@@ -1,16 +1,18 @@
 PODS:
-  - TinyConstraints (4.0.1)
+  - NVActivityIndicatorView (4.8.0):
+    - NVActivityIndicatorView/Presenter (= 4.8.0)
+  - NVActivityIndicatorView/Presenter (4.8.0)
 
 DEPENDENCIES:
-  - TinyConstraints (~> 4.0.1)
+  - NVActivityIndicatorView
 
 SPEC REPOS:
   trunk:
-    - TinyConstraints
+    - NVActivityIndicatorView
 
 SPEC CHECKSUMS:
-  TinyConstraints: 8dd91295e56797648c7bc335dd20e1d91ec4c192
+  NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
 
-PODFILE CHECKSUM: fb51525483b89d5dc32cdac861f738bd51523f87
+PODFILE CHECKSUM: 1042f1a788d52cb636558c67107a590b92cb8f45
 
 COCOAPODS: 1.8.4
