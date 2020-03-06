@@ -7,7 +7,10 @@
 //
 
 import UIKit
-import NVActivityIndicatorView
+
+protocol CountryCollectionControllerDelegate : class {
+    func countryApplyToService(clickedCountry: String)
+}
 
 class CountryCollectionViewController : UIViewController {
     
@@ -28,20 +31,22 @@ class CountryCollectionViewController : UIViewController {
         UIImage(named: "united-kingdom")!
     ]
     
-    var countryContainer = ""
-    
+    var countryName = ""
+    weak var delegate: CountryCollectionControllerDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
+    
     
     //MARK: action
     @IBAction func cancelButtonTouched(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
         
     }
     @IBAction func selectButtonTouched(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        
+        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -51,7 +56,7 @@ extension CountryCollectionViewController : UICollectionViewDelegate {
 }
 
 //MARK: UICollectionViewDataSource
-extension CountryCollectionViewController : UICollectionViewDataSource, NVActivityIndicatorViewable {
+extension CountryCollectionViewController : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return countries.count
     }
@@ -73,18 +78,13 @@ extension CountryCollectionViewController : UICollectionViewDataSource, NVActivi
         cell = collectionView.cellForItem(at: indexPath) as! CountryCollectionViewCell
         cell.layer.borderColor = UIColor.gray.cgColor
         cell.layer.borderWidth = 2
-        countryContainer = countries[indexPath.row]
-        startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding", type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1){
-            NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
-        }
-  
+        countryName = countries[indexPath.row]
+        delegate?.countryApplyToService(clickedCountry: countryName)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
         cell?.layer.borderColor = UIColor.lightGray.cgColor
         cell?.layer.borderWidth = 0.5
-
     }
 }
