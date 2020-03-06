@@ -148,7 +148,7 @@ extension MainViewController : UITableViewDataSource {
             
             let remoteImageURL = URL(string: internationalData[indexPath.row].urlToImage ?? "Error")
 
-            cell.imageView?.sd_setImage(with: remoteImageURL, completed: {(downloadedImage, downloadException, cacheType, downloadURL) in
+            cell.urlToImage?.sd_setImage(with: remoteImageURL, completed: {(downloadedImage, downloadException, cacheType, downloadURL) in
 
                 if let downloadException = downloadException {
                     print("Error downloading the image: \(downloadException.localizedDescription)")
@@ -163,7 +163,7 @@ extension MainViewController : UITableViewDataSource {
             
             
             let remoteImageURL = URL(string: keywardData[indexPath.row].urlToImage ?? "Error")
-            cell.imageView?.sd_setImage(with: remoteImageURL, completed: {(downloadedImage, downloadException, cacheType, downloadURL) in
+            cell.urlToImage?.sd_setImage(with: remoteImageURL, completed: {(downloadedImage, downloadException, cacheType, downloadURL) in
                            
                 if let downloadException = downloadException {
                     
@@ -194,7 +194,7 @@ extension MainViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(identifier: "NewsDetailViewController") as! NewsDetailViewController
-    
+
         if tableView == sourceTableView {
             return
         }
