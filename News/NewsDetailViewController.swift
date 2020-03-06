@@ -241,6 +241,5 @@ extension NewsDetailViewController: UIScrollViewDelegate {
             // page가 바뀌면 다시 설정
             setPageView()
         }
-        
     }
 }

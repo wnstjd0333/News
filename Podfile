@@ -6,7 +6,7 @@ target 'News' do
   use_frameworks!
 
   pod 'NVActivityIndicatorView'
-
+  pod 'SDWebImage', '~> 4.0'
   # Pods for News
 
   target 'NewsTests' do

@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
+import SDWebImage
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, NVActivityIndicatorViewable {
     @IBOutlet weak var topHeadingTableView: UITableView!
     @IBOutlet weak var everythingTableView: UITableView!
     @IBOutlet weak var sourceTableView: UITableView!
@@ -21,6 +23,7 @@ class MainViewController: UIViewController {
     var keywardData = [Article]()
     var providerData = [Source]()
     var service : NewsService?
+    var countryCode = "kr"
     
     //MARK: action
     @IBAction func newsSwitchControlTapped(_ sender: UISegmentedControl) {
@@ -40,7 +43,9 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func countryButtonClicked(_ sender: Any) {
-        self.performSegue(withIdentifier: "Country", sender: nil)
+        let vc = CountryCollectionViewController()
+        self.present(vc, animated: true, completion: nil)
+        
     }
 
     //MARK: life cycle
@@ -54,11 +59,16 @@ class MainViewController: UIViewController {
         sourceTableView.delegate = self
         sourceTableView.dataSource = self
         mainScrollView.delegate = self
-              
         mainScrollView.isPagingEnabled = true
         
         service = NewsService()
-        service?.fetchInternationalNews(countryCode: "kr") { (success, articles) in
+        
+        startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding", type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
+        
+        service?.fetchInternationalNews(countryCode: countryCode) { (success, articles) in
+            
+            NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+            
             if !success { print("fail")
                 return
             }
@@ -117,6 +127,9 @@ class MainViewController: UIViewController {
         }
         return ""
     }
+    
+    
+
 }
 
 //MARK: UITableViewDataSource
@@ -130,32 +143,33 @@ extension MainViewController : UITableViewDataSource {
             cell.titleLabel.text = internationalData[indexPath.row].title
             cell.publishedAtLabel.text = internationalData[indexPath.row].publishedAt
         
-        //TODO : Article의 구조체 Source의 이름 불러오기
             cell.sourceLabel.text =  "   " + (internationalData[indexPath.row].author ?? "익명")
             cell.newsDescriptionLabel.text = internationalData[indexPath.row].description
             
-            if let data = try? Data(contentsOf:
-                URL(string: internationalData[indexPath.row].urlToImage ?? "nil")!){                        cell.urlToImage.image = UIImage(data: data)
-                
-        //TODO : 이미지 중복 불림 해결하기.
-                
-//            if cell.finishReload == false {
-//                cell.finishReload = true
-//                topHeadingTableView.beginUpdates()
-//                topHeadingTableView.reloadRows(at: [IndexPath.init(row: indexPath.row, section: 0)], with: UITableView.RowAnimation.automatic)
-//                topHeadingTableView.endUpdates()
-//                }
-            }
-            
+            let remoteImageURL = URL(string: internationalData[indexPath.row].urlToImage ?? "Error")
 
+            cell.imageView?.sd_setImage(with: remoteImageURL, completed: {(downloadedImage, downloadException, cacheType, downloadURL) in
+
+                if let downloadException = downloadException {
+                    print("Error downloading the image: \(downloadException.localizedDescription)")
+                }
+            })
+            
         } else if cellIndentifier == "EverythingTableViewCell"  {
             cell.titleLabel.text = keywardData[indexPath.row].title
             cell.publishedAtLabel.text = keywardData[indexPath.row].publishedAt
             cell.sourceLabel.text =  "   " + (keywardData[indexPath.row].author ?? "익명")
             cell.newsDescriptionLabel.text = keywardData[indexPath.row].description
-            if let data = try? Data(contentsOf:
-            URL(string: keywardData[indexPath.row].urlToImage ?? "nil")!){                        cell.urlToImage.image = UIImage(data: data)
-            }
+            
+            
+            let remoteImageURL = URL(string: keywardData[indexPath.row].urlToImage ?? "Error")
+            cell.imageView?.sd_setImage(with: remoteImageURL, completed: {(downloadedImage, downloadException, cacheType, downloadURL) in
+                           
+                if let downloadException = downloadException {
+                    
+                    print("Error downloading the image: \(downloadException.localizedDescription)")
+                }
+            })
 
         } else {
             cell.nameLabel.text = providerData[indexPath.row].name
@@ -180,7 +194,7 @@ extension MainViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(identifier: "NewsDetailViewController") as! NewsDetailViewController
-        
+    
         if tableView == sourceTableView {
             return
         }
@@ -228,5 +242,11 @@ extension MainViewController : NewsDetailViewControllerDelegate {
         }
         
         return internationalData
+    }
+}
+
+extension MainViewController : CountryCollectionControllerDelegate {
+    func countryApplyToService(clickedCountry: String) {
+        countryCode = clickedCountry
     }
 }
