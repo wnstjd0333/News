@@ -71,11 +71,11 @@
                                             <outlet property="delegate" destination="8Gl-21-afR" id="zwJ-lD-jrN"/>
                                         </connections>
                                     </collectionView>
-                                    <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="ZUi-BF-3IE">
+                                    <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="ZUi-BF-3IE">
                                         <rect key="frame" x="0.0" y="378" width="314" height="38"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J8h-i7-2iv">
-                                                <rect key="frame" x="0.0" y="0.0" width="149.33333333333334" height="38"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="157" height="38"/>
                                                 <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                                 <state key="normal" title="Select"/>
@@ -84,7 +84,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KaO-F7-jgW">
-                                                <rect key="frame" x="149.33333333333337" y="0.0" width="164.66666666666663" height="38"/>
+                                                <rect key="frame" x="157" y="0.0" width="157" height="38"/>
                                                 <color key="backgroundColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                                 <state key="normal" title="Cancel"/>
@@ -94,11 +94,9 @@
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="KaO-F7-jgW" firstAttribute="leading" secondItem="J8h-i7-2iv" secondAttribute="trailing" id="66L-79-RmT"/>
                                             <constraint firstItem="J8h-i7-2iv" firstAttribute="leading" secondItem="ZUi-BF-3IE" secondAttribute="leading" id="6BO-8S-cWm"/>
                                             <constraint firstItem="J8h-i7-2iv" firstAttribute="top" secondItem="ZUi-BF-3IE" secondAttribute="top" id="XAs-nN-1qq"/>
                                             <constraint firstAttribute="bottom" secondItem="KaO-F7-jgW" secondAttribute="bottom" id="a7A-UD-6FO"/>
-                                            <constraint firstItem="KaO-F7-jgW" firstAttribute="leading" secondItem="J8h-i7-2iv" secondAttribute="trailing" id="eyl-dv-1xf"/>
                                             <constraint firstAttribute="bottom" secondItem="J8h-i7-2iv" secondAttribute="bottom" id="nI4-L4-v9h"/>
                                             <constraint firstItem="KaO-F7-jgW" firstAttribute="top" secondItem="ZUi-BF-3IE" secondAttribute="top" id="roL-Gb-oMB"/>
                                             <constraint firstAttribute="trailing" secondItem="KaO-F7-jgW" secondAttribute="trailing" id="yZT-xN-1db"/>
@@ -118,7 +116,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.51040317357512954" green="0.51040317357512954" blue="0.51040317357512954" alpha="0.504181338028169" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="BaJ-UJ-8ke" firstAttribute="leading" secondItem="Tf9-PV-UOG" secondAttribute="leading" constant="50" id="Phi-1a-ei5"/>
                             <constraint firstItem="BaJ-UJ-8ke" firstAttribute="top" secondItem="Tf9-PV-UOG" secondAttribute="top" constant="140" id="ZBD-cZ-P1s"/>
@@ -427,7 +425,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="Xlu-L5-BWh">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="J5a-qm-drs">
+                        <barButtonItem key="rightBarButtonItem" title="Country" style="plain" id="J5a-qm-drs">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hmX-sF-wr2">
                                 <rect key="frame" x="302" y="7" width="92" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -437,7 +435,7 @@
                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <segue destination="8Gl-21-afR" kind="presentation" identifier="Country" modalPresentationStyle="currentContext" id="44t-ee-6aF"/>
+                                    <segue destination="8Gl-21-afR" kind="presentation" identifier="Country" modalPresentationStyle="overCurrentContext" id="44t-ee-6aF"/>
                                 </connections>
                             </button>
                             <connections>
@@ -470,7 +468,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iy9-y0-Kts" userLabel="Detail Scroll">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="636"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="J0e-HL-Q5P" userLabel="Content View">
+                                    <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="J0e-HL-Q5P" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="1242" height="636"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jT7-bn-CJ3" userLabel="News View1" customClass="NewsDetailView" customModule="News" customModuleProvider="target">

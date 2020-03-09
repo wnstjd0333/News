@@ -61,37 +61,36 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         mainScrollView.delegate = self
         mainScrollView.isPagingEnabled = true
         
+        applyInternational(countryCode)
+        applyKeyword()
+        applyNewsProvider()
+    }
+    
+    func applyInternational(_ savedCountryCode: String){
         service = NewsService()
-        
         startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding", type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
         
-        service?.fetchInternationalNews(countryCode: countryCode) { (success, articles) in
-            
-            NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
-            
-            if !success { print("fail")
-                return
-            }
-            
-            guard let items = articles else { print("no data!")
-                return
-            }
-            
+        service?.fetchInternationalNews(countryCode: savedCountryCode) { (success, articles) in
+             
+             NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+             
+            if !success { print("fail"); return }
+            guard let items = articles else { print("no data!"); return }
+             
             self.internationalData = items
 
-            DispatchQueue.main.async {
-                self.topHeadingTableView.reloadData()
-            }
-        }
-        
+             DispatchQueue.main.async {
+                 self.topHeadingTableView.reloadData()
+             }
+         }
+    }
+    
+    func applyKeyword(){
+        service = NewsService()
         service?.fetchKeywordNews(keyword: "bitcoin") { (success, articles) in
-            if !success { print("fail")
-                return
-            }
-                    
-            guard let items = articles else { print("no data!")
-                return
-            }
+            if !success { print("fail"); return}
+            
+            guard let items = articles else { print("no data!"); return}
                     
             self.keywardData = items
 
@@ -99,24 +98,23 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                 self.everythingTableView.reloadData()
             }
         }
-        
-        service?.fetchNewsProviders { (success, sources) in
-            if !success { print("fail")
-                return
-            }
-                    
-            guard let items = sources else { print("no data!")
-                return
-            }
+    }
     
+    func applyNewsProvider(){
+        service = NewsService()
+        service?.fetchNewsProviders { (success, sources) in
+            if !success { print("fail"); return }
+                        
+            guard let items = sources else { print("no data!"); return }
+        
             self.providerData = items
-            
+                
             DispatchQueue.main.async {
                 self.sourceTableView.reloadData()
             }
         }
     }
-
+    
     func checkTableView(_ tableView: UITableView) -> String {
         if tableView == topHeadingTableView {
             return "TopHeadingTableViewCell"
@@ -127,15 +125,12 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         }
         return ""
     }
-    
-    
-
 }
 
 //MARK: UITableViewDataSource
 extension MainViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let cellIndentifier = checkTableView(tableView)
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIndentifier, for: indexPath) as! NewsTableViewCell
         
@@ -167,7 +162,7 @@ extension MainViewController : UITableViewDataSource {
                            
                 if let downloadException = downloadException {
                     
-                    print("Error downloading the image: \(downloadException.localizedDescription)")
+                print("Error downloading the image: \(downloadException.localizedDescription)")
                 }
             })
 
@@ -194,7 +189,7 @@ extension MainViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(identifier: "NewsDetailViewController") as! NewsDetailViewController
-
+        
         if tableView == sourceTableView {
             return
         }
@@ -240,13 +235,13 @@ extension MainViewController : NewsDetailViewControllerDelegate {
         } else if newsSegmentControl.selectedSegmentIndex == 1 {
             return keywardData
         }
-        
         return internationalData
     }
 }
 
 extension MainViewController : CountryCollectionControllerDelegate {
-    func countryApplyToService(clickedCountry: String) {
-        countryCode = clickedCountry
+    func countryApplyToService(_ savedCountryCode: String) {
+        countryCode = savedCountryCode
+        applyInternational(countryCode)
     }
 }
