@@ -9,7 +9,7 @@
 import UIKit
 
 protocol CountryCollectionControllerDelegate : class {
-    func countryApplyToService(clickedCountry: String)
+    func countryApplyToService(_ savedCountryCode: String)
 }
 
 class CountryCollectionViewController : UIViewController {
@@ -36,8 +36,8 @@ class CountryCollectionViewController : UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
-    
     
     //MARK: action
     @IBAction func cancelButtonTouched(_ sender: Any) {
@@ -45,7 +45,7 @@ class CountryCollectionViewController : UIViewController {
         
     }
     @IBAction func selectButtonTouched(_ sender: Any) {
-        
+        delegate?.countryApplyToService(countryName)
         dismiss(animated: true, completion: nil)
     }
 }
@@ -79,7 +79,6 @@ extension CountryCollectionViewController : UICollectionViewDataSource {
         cell.layer.borderColor = UIColor.gray.cgColor
         cell.layer.borderWidth = 2
         countryName = countries[indexPath.row]
-        delegate?.countryApplyToService(clickedCountry: countryName)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
