@@ -16,7 +16,7 @@ class CountryCollectionViewController : UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
         
-    let countries = ["ae", "ar", "au", "bg", "br", "ca", "ch", "cn", "co","uk"]
+    let countries = ["ae", "ar", "au", "bg", "br", "ca", "ch", "cn", "co", "fr", "it", "jp", "kr",  "ru", "se", "sg", "th", "tr", "us", "uk"]
     
     let countryImages: [UIImage] = [
         UIImage(named: "united-arab-emirates")!,
@@ -28,6 +28,16 @@ class CountryCollectionViewController : UIViewController {
         UIImage(named: "switzerland")!,
         UIImage(named: "china")!,
         UIImage(named: "colombia")!,
+        UIImage(named: "france")!,
+        UIImage(named: "italy")!,
+        UIImage(named: "japan")!,
+        UIImage(named: "south-korea")!,
+        UIImage(named: "russia")!,
+        UIImage(named: "sweden")!,
+        UIImage(named: "singapore")!,
+        UIImage(named: "thailand")!,
+        UIImage(named: "turkey")!,
+        UIImage(named: "united-states-of-america")!,
         UIImage(named: "united-kingdom")!
     ]
     
@@ -77,7 +87,7 @@ extension CountryCollectionViewController : UICollectionViewDataSource {
         
         cell = collectionView.cellForItem(at: indexPath) as! CountryCollectionViewCell
         cell.layer.borderColor = UIColor.gray.cgColor
-        cell.layer.borderWidth = 2
+        cell.layer.borderWidth = 3
         countryName = countries[indexPath.row]
     }
     

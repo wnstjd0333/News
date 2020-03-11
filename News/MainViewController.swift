@@ -11,6 +11,8 @@ import NVActivityIndicatorView
 import SDWebImage
 
 class MainViewController: UIViewController, NVActivityIndicatorViewable {
+    @IBOutlet weak var searchContainerView: UIView!
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var topHeadingTableView: UITableView!
     @IBOutlet weak var everythingTableView: UITableView!
     @IBOutlet weak var sourceTableView: UITableView!
@@ -24,6 +26,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     var providerData = [Source]()
     var service : NewsService?
     var countryCode = "kr"
+    var searchedText = "corona"
     
     //MARK: action
     @IBAction func newsSwitchControlTapped(_ sender: UISegmentedControl) {
@@ -51,7 +54,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     //MARK: life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        searchBar.delegate = self
         topHeadingTableView.delegate = self
         topHeadingTableView.dataSource = self
         everythingTableView.delegate = self
@@ -62,7 +65,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         mainScrollView.isPagingEnabled = true
         
         applyInternational(countryCode)
-        applyKeyword()
+        applyKeyword(searchedText)
         applyNewsProvider()
     }
     
@@ -85,9 +88,14 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
          }
     }
     
-    func applyKeyword(){
+    func applyKeyword(_ searchedText : String){
         service = NewsService()
-        service?.fetchKeywordNews(keyword: "bitcoin") { (success, articles) in
+        startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding", type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
+        
+        service?.fetchKeywordNews(keyword: searchedText) { (success, articles) in
+            
+            NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+
             if !success { print("fail"); return}
             
             guard let items = articles else { print("no data!"); return}
@@ -245,3 +253,11 @@ extension MainViewController : CountryCollectionControllerDelegate {
         applyInternational(countryCode)
     }
 }
+
+extension MainViewController : UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchBarText = searchBar.text else { return }
+        applyKeyword(searchBarText)
+    }
+}
+

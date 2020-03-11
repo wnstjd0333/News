@@ -17,10 +17,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BaJ-UJ-8ke">
-                                <rect key="frame" x="50" y="140" width="314" height="416"/>
+                                <rect key="frame" x="50" y="120" width="314" height="476"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6Kn-4p-LL4">
-                                        <rect key="frame" x="5" y="5" width="304" height="353"/>
+                                        <rect key="frame" x="5" y="5" width="304" height="413"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="GjH-9T-fnT">
                                             <size key="itemSize" width="87" height="104"/>
@@ -72,7 +72,7 @@
                                         </connections>
                                     </collectionView>
                                     <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="ZUi-BF-3IE">
-                                        <rect key="frame" x="0.0" y="378" width="314" height="38"/>
+                                        <rect key="frame" x="0.0" y="438" width="314" height="38"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J8h-i7-2iv">
                                                 <rect key="frame" x="0.0" y="0.0" width="157" height="38"/>
@@ -119,9 +119,9 @@
                         <color key="backgroundColor" red="0.51040317357512954" green="0.51040317357512954" blue="0.51040317357512954" alpha="0.504181338028169" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="BaJ-UJ-8ke" firstAttribute="leading" secondItem="Tf9-PV-UOG" secondAttribute="leading" constant="50" id="Phi-1a-ei5"/>
-                            <constraint firstItem="BaJ-UJ-8ke" firstAttribute="top" secondItem="Tf9-PV-UOG" secondAttribute="top" constant="140" id="ZBD-cZ-P1s"/>
+                            <constraint firstItem="BaJ-UJ-8ke" firstAttribute="top" secondItem="Tf9-PV-UOG" secondAttribute="top" constant="120" id="ZBD-cZ-P1s"/>
                             <constraint firstItem="Tf9-PV-UOG" firstAttribute="trailing" secondItem="BaJ-UJ-8ke" secondAttribute="trailing" constant="50" id="d0M-Nt-Ec7"/>
-                            <constraint firstItem="Tf9-PV-UOG" firstAttribute="bottom" secondItem="BaJ-UJ-8ke" secondAttribute="bottom" constant="180" id="mmu-vK-10D"/>
+                            <constraint firstItem="Tf9-PV-UOG" firstAttribute="bottom" secondItem="BaJ-UJ-8ke" secondAttribute="bottom" constant="140" id="mmu-vK-10D"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tf9-PV-UOG"/>
                     </view>
@@ -160,14 +160,31 @@
                                     <action selector="newsSwitchControlTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="zYN-o7-U1Z"/>
                                 </connections>
                             </segmentedControl>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fvI-jp-QdE">
+                                <rect key="frame" x="0.0" y="109" width="414" height="40"/>
+                                <subviews>
+                                    <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="E4k-WL-ckJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </searchBar>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="E4k-WL-ckJ" firstAttribute="top" secondItem="fvI-jp-QdE" secondAttribute="top" id="1rh-tT-wc4"/>
+                                    <constraint firstAttribute="bottom" secondItem="E4k-WL-ckJ" secondAttribute="bottom" id="GWi-Xp-MoB"/>
+                                    <constraint firstItem="E4k-WL-ckJ" firstAttribute="leading" secondItem="fvI-jp-QdE" secondAttribute="leading" id="W5Z-bJ-RPq"/>
+                                    <constraint firstAttribute="height" constant="40" id="lba-AD-q8O"/>
+                                    <constraint firstAttribute="trailing" secondItem="E4k-WL-ckJ" secondAttribute="trailing" id="rRe-CV-WBg"/>
+                                </constraints>
+                            </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fve-z2-DXP">
-                                <rect key="frame" x="0.0" y="120" width="414" height="616"/>
+                                <rect key="frame" x="0.0" y="149" width="414" height="587"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="jSL-vY-4UQ">
-                                        <rect key="frame" x="0.0" y="0.0" width="1242" height="616"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1242" height="587"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="P7K-si-4vB" userLabel="topHeadingTableView">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="616"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="587"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopHeadingTableViewCell" rowHeight="96" id="R9r-W5-uhy" userLabel="TopHeadingTableViewCell" customClass="NewsTableViewCell" customModule="News" customModuleProvider="target">
@@ -248,7 +265,7 @@
                                                 </prototypes>
                                             </tableView>
                                             <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0YB-UN-aDt" userLabel="everythingTableView">
-                                                <rect key="frame" x="414" y="0.0" width="414" height="616"/>
+                                                <rect key="frame" x="414" y="0.0" width="414" height="587"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EverythingTableViewCell" rowHeight="100" id="zU4-Ka-4cG" customClass="NewsTableViewCell" customModule="News" customModuleProvider="target">
@@ -329,7 +346,7 @@
                                                 </prototypes>
                                             </tableView>
                                             <tableView clipsSubviews="YES" tag="2" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="F21-Pg-lOf" userLabel="sourceTableView">
-                                                <rect key="frame" x="828" y="0.0" width="414" height="616"/>
+                                                <rect key="frame" x="828" y="0.0" width="414" height="587"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SourceTableViewCell" rowHeight="74" id="O1X-5Z-j8E" customClass="NewsTableViewCell" customModule="News" customModuleProvider="target">
@@ -414,9 +431,12 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="fve-z2-DXP" firstAttribute="top" secondItem="YXJ-dv-oJF" secondAttribute="bottom" constant="16" id="0oR-cr-lId"/>
+                            <constraint firstItem="fve-z2-DXP" firstAttribute="top" secondItem="fvI-jp-QdE" secondAttribute="bottom" id="0oR-cr-lId"/>
                             <constraint firstItem="YXJ-dv-oJF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="Ddc-hG-GVE"/>
                             <constraint firstItem="fve-z2-DXP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Fqf-lb-XhJ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fvI-jp-QdE" secondAttribute="trailing" id="IRm-Vs-Fhs"/>
+                            <constraint firstItem="fvI-jp-QdE" firstAttribute="top" secondItem="YXJ-dv-oJF" secondAttribute="bottom" constant="5" id="JVE-k9-X31"/>
+                            <constraint firstItem="fvI-jp-QdE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="MV8-gc-9HN"/>
                             <constraint firstItem="YXJ-dv-oJF" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="MhJ-lL-vNS"/>
                             <constraint firstItem="fve-z2-DXP" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="dhC-xo-mgt"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="fve-z2-DXP" secondAttribute="bottom" id="kDc-G0-AkC"/>
@@ -448,6 +468,8 @@
                         <outlet property="everythingTableView" destination="0YB-UN-aDt" id="rfq-EH-G2z"/>
                         <outlet property="mainScrollView" destination="fve-z2-DXP" id="bZi-0C-SGe"/>
                         <outlet property="newsSegmentControl" destination="YXJ-dv-oJF" id="fRW-ua-fAO"/>
+                        <outlet property="searchBar" destination="E4k-WL-ckJ" id="Ons-6T-5bw"/>
+                        <outlet property="searchContainerView" destination="fvI-jp-QdE" id="bFz-6M-Fkx"/>
                         <outlet property="sourceTableView" destination="F21-Pg-lOf" id="aKW-pm-EUp"/>
                         <outlet property="toSelectCountryButton" destination="hmX-sF-wr2" id="82U-Iw-YX6"/>
                         <outlet property="topHeadingTableView" destination="P7K-si-4vB" id="810-iN-yAu"/>
