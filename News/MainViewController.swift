@@ -46,7 +46,10 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     }
     
     @IBAction func countryButtonClicked(_ sender: Any) {
-        let vc = CountryCollectionViewController()
+        guard let vc = storyboard?.instantiateViewController(identifier: "Country") as? CountryCollectionViewController else {
+            return
+        }
+        vc.delegate = self
         self.present(vc, animated: true, completion: nil)
         
     }
