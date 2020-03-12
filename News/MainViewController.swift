@@ -27,7 +27,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     var providerData = [Source]()
     var service : NewsService?
     var countryCode = "us"
-    var searchedText = "corona"
+    var searchedText = "trump"
     
     //MARK: action
     @IBAction func newsSwitchControlTapped(_ sender: UISegmentedControl) {
@@ -36,17 +36,28 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         mainScrollView.setContentOffset(CGPoint(x: x, y:0), animated: false)
         
         if newsSegmentControl.selectedSegmentIndex == 0 {
+            
+            if internationalData.count == 0 {
+                keywardAlert()
+                return
+            } else {
             topHeadingTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            }
+            
             toSelectCountryButton.alpha = 1
             searchBar.alpha = 0
-            countryText.text = "Whta's News today in \(countryCode.uppercased())"
+            countryText.text = "What's News today in \(countryCode.uppercased())"
+            searchBar.resignFirstResponder()
             
         } else if newsSegmentControl.selectedSegmentIndex == 1 {
+            
             if keywardData.count == 0 {
+                keywardAlert()
                 return
             } else {
             everythingTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             }
+            
             toSelectCountryButton.alpha = 0
             searchBar.alpha = 1
             countryText.text = ""
@@ -56,6 +67,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
             toSelectCountryButton.alpha = 0
             searchBar.alpha = 0
             countryText.text = "List of News source"
+            searchBar.resignFirstResponder()
 
         }
     }
@@ -86,6 +98,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         applyInternational(countryCode)
         applyKeyword(searchedText)
         applyNewsProvider()
+        
     }
     
     func applyInternational(_ savedCountryCode: String){
@@ -94,16 +107,18 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding", type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
         
         service?.fetchInternationalNews(countryCode: savedCountryCode) { (success, articles) in
-             
-             NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
-             
+                          
             if !success { print("fail"); return }
             guard let items = articles else { print("no data!"); return }
              
             self.internationalData = items
             
              DispatchQueue.main.async {
+                if articles?.count == 0 {
+                    self.keywardAlert()
+                }
                  self.topHeadingTableView.reloadData()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
              }
          }
     }
@@ -114,8 +129,6 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         
         service?.fetchKeywordNews(keyword: searchedText) { (success, articles) in
             
-            NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
-
             if !success { print("fail"); return}
             
             guard let items = articles else { print("no data!"); return}
@@ -127,6 +140,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                     self.keywardAlert()
                 }
                 self.everythingTableView.reloadData()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
   
             }
         }
@@ -180,14 +194,9 @@ extension MainViewController : UITableViewDataSource {
             cell.sourceLabel.text          = internationalData[indexPath.row].author ?? "익명"
             cell.newsDescriptionLabel.text = internationalData[indexPath.row].description
             
-            let remoteImageURL = URL(string: internationalData[indexPath.row].urlToImage ?? "error")
+            let remoteImageURL = URL(string: internationalData[indexPath.row].urlToImage ?? "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
 
-            cell.urlToImage?.sd_setImage(with: remoteImageURL, completed: {(downloadedImage, downloadException, cacheType, downloadURL) in
-
-                if let downloadException = downloadException {
-                    print("Error downloading the image: \(downloadException.localizedDescription)")
-                }
-            })
+            cell.urlToImage?.sd_setImage(with: remoteImageURL)
             
         } else if cellIndentifier == "EverythingTableViewCell"  {
             
@@ -196,15 +205,9 @@ extension MainViewController : UITableViewDataSource {
             cell.sourceLabel.text          = keywardData[indexPath.row].author ?? "익명"
             cell.newsDescriptionLabel.text = keywardData[indexPath.row].description
             
-            let remoteImageURL = URL(string: keywardData[indexPath.row].urlToImage ?? "Error")
-            cell.urlToImage?.sd_setImage(with: remoteImageURL, completed: {(downloadedImage, downloadException, cacheType, downloadURL) in
-                           
-                if let downloadException = downloadException {
-                    
-                print("Error downloading the image: \(downloadException.localizedDescription)")
-                
-                }
-            })
+            let remoteImageURL = URL(string: keywardData[indexPath.row].urlToImage ?? "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
+
+            cell.urlToImage?.sd_setImage(with: remoteImageURL)
  
         } else {
             cell.nameLabel.text = providerData[indexPath.row].name
@@ -228,14 +231,24 @@ extension MainViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(identifier: "NewsDetailViewController") as! NewsDetailViewController
-        
         if tableView == sourceTableView {
             return
         }
-        controller.delegate = self
-        present(controller, animated: true, completion: nil)
+        
+        if tableView == topHeadingTableView {
+            let urlString = internationalData[indexPath.row].url ?? ""
+            if let url = URL(string: urlString){
+                UIApplication.shared.open(url, options: [:])
+            }
+            print(internationalData[indexPath.row].urlToImage ?? "nil")
+        }
+        
+        if tableView == everythingTableView {
+            let urlString = keywardData[indexPath.row].url ?? ""
+            if let url = URL(string: urlString){
+                UIApplication.shared.open(url, options: [:])
+            }
+        }
     }
 }
 
@@ -250,6 +263,7 @@ extension MainViewController : UITableViewDelegate {
     }
 }
 
+//MARK: UIScrollViewDelegate
 extension MainViewController : UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageWidth = mainScrollView.frame.size.width
@@ -260,7 +274,8 @@ extension MainViewController : UIScrollViewDelegate {
             newsSegmentControl.selectedSegmentIndex = 0
             toSelectCountryButton.alpha = 1
             searchBar.alpha = 0
-            countryText.text = "Whta's News today in \(countryCode.uppercased())"
+            countryText.text = "What's News today in \(countryCode.uppercased())"
+            searchBar.resignFirstResponder()
 
         } else if MainPageControl.currentPage == 1 {
             newsSegmentControl.selectedSegmentIndex = 1
@@ -273,10 +288,11 @@ extension MainViewController : UIScrollViewDelegate {
             toSelectCountryButton.alpha = 0
             searchBar.alpha = 0
             countryText.text = "List of News source"
+            searchBar.resignFirstResponder()
         }
     }
 }
-
+//MARK: NewsDetailViewControllerDelegate
 extension MainViewController : NewsDetailViewControllerDelegate {
      func getNewsItems() -> [Article]? {
         if newsSegmentControl.selectedSegmentIndex == 0 {
@@ -287,7 +303,7 @@ extension MainViewController : NewsDetailViewControllerDelegate {
         return internationalData
     }
 }
-
+//MARK: CountryCollectionControllerDelegate
 extension MainViewController : CountryCollectionControllerDelegate {
     func countryApplyToService(_ savedCountryCode: String) {
         countryCode = savedCountryCode
@@ -296,11 +312,26 @@ extension MainViewController : CountryCollectionControllerDelegate {
     }
 }
 
+//MARK: UISearchBarDelegate
 extension MainViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchBarText = searchBar.text else { return }
         applyKeyword(searchBarText)
-        
+        searchBar.resignFirstResponder()
+    }
+}
+
+extension UIImageView {
+    func load(url: URL) {
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: url) {
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self?.image = image
+                    }
+                }
+            }
+        }
     }
 }
 
