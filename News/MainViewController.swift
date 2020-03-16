@@ -11,23 +11,26 @@ import NVActivityIndicatorView
 import SDWebImage
 
 class MainViewController: UIViewController, NVActivityIndicatorViewable {
-    @IBOutlet weak var searchContainerView: UIView!
-    @IBOutlet weak var searchBar: UISearchBar!
+    
+    @IBOutlet weak var toSelectCountryButton: UIButton!
     @IBOutlet weak var countryText: UILabel!
-    @IBOutlet weak var topHeadingTableView: UITableView!
-    @IBOutlet weak var everythingTableView: UITableView!
-    @IBOutlet weak var sourceTableView: UITableView!
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var newsSegmentControl: UISegmentedControl!
     @IBOutlet weak var MainPageControl: UIPageControl!
-    @IBOutlet weak var toSelectCountryButton: UIButton!
+    @IBOutlet weak var topHeadingTableView: UITableView!
+    @IBOutlet weak var searchContainerView: UIView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var everythingTableView: UITableView!
+    @IBOutlet weak var sourceTableView: UITableView!
     
     var internationalData = [Article]()
     var keywardData = [Article]()
     var providerData = [Source]()
     var service : NewsService?
-    var countryCode = "us"
-    var searchedText = "trump"
+    var article = Article()
+    var fetchingMore = false
+    var countryCode = "us" //CountryCollectionViewController의 countries 속성 중 선택
+    var searchedText = "trump" //KeywardData의 초기 검색값
     
     //MARK: action
     @IBAction func newsSwitchControlTapped(_ sender: UISegmentedControl) {
@@ -41,7 +44,8 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                 keywardAlert()
                 return
             } else {
-            topHeadingTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                topHeadingTableView.scrollToRow(at: IndexPath(row: 0, section: 0),
+                                                at: .top, animated: false)
             }
             
             toSelectCountryButton.alpha = 1
@@ -55,7 +59,8 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                 keywardAlert()
                 return
             } else {
-            everythingTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                everythingTableView.scrollToRow(at: IndexPath(row: 0, section: 0),
+                                                at: .top, animated: false)
             }
             
             toSelectCountryButton.alpha = 0
@@ -63,7 +68,8 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
             countryText.text = ""
 
         } else {
-            sourceTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            sourceTableView.scrollToRow(at: IndexPath(row: 0, section: 0),
+                                        at: .top, animated: false)
             toSelectCountryButton.alpha = 0
             searchBar.alpha = 0
             countryText.text = "List of News source"
@@ -94,54 +100,97 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         sourceTableView.dataSource = self
         mainScrollView.delegate = self
         mainScrollView.isPagingEnabled = true
-        
+
         applyInternational(countryCode)
-        applyKeyword(searchedText)
-        applyNewsProvider()
-        
+        doRefresh()
+//        initViewModel()
+//        initTableView()
     }
     
+//    func initViewModel() {
+//        service?.reloadHandler = { [weak self] in self?.topHeadingTableView.reloadData()}
+//    }
+//
+//    func initTableView() {
+//        topHeadingTableView.register(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(NewsTableViewCell.self))
+//
+//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        applyKeyword(searchedText)
+        applyNewsProvider()
+    }
+    
+    @objc func refresh(sender: UIRefreshControl){
+        topHeadingTableView.reloadData()
+        sender.endRefreshing()
+    }
+
+    func doRefresh(){
+        let refreshControl = UIRefreshControl()
+        topHeadingTableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(MainViewController.refresh(sender:)),
+                                    for: .valueChanged)
+//        let refreshEveryThing = UIRefreshControl()
+//        everythingTableView.refreshControl = refreshEveryThing
+//        refreshEveryThing.addTarget(self, action: #selector(MainViewController.refresh(sender:)),
+//                                    for: .valueChanged)
+    }
+    
+
+    
     func applyInternational(_ savedCountryCode: String){
+        //이미지가 다운되는동안 request
+        startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
+                       type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
+       
         service = NewsService()
-        
-        startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding", type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
-        
         service?.fetchInternationalNews(countryCode: savedCountryCode) { (success, articles) in
-                          
+           
             if !success { print("fail"); return }
             guard let items = articles else { print("no data!"); return }
-             
             self.internationalData = items
             
              DispatchQueue.main.async {
                 if articles?.count == 0 {
                     self.keywardAlert()
                 }
-                 self.topHeadingTableView.reloadData()
+                //이미지를 받으면 response, MainThread에서 실행
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+                self.topHeadingTableView.reloadData()
              }
          }
     }
     
     func applyKeyword(_ searchedText : String){
-        service = NewsService()
-        startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding", type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
+       //이미지가 다운되는동안 request
+        startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
+                       type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
         
+        service = NewsService()
         service?.fetchKeywordNews(keyword: searchedText) { (success, articles) in
-            
+
             if !success { print("fail"); return}
-            
             guard let items = articles else { print("no data!"); return}
-                    
             self.keywardData = items
 
             DispatchQueue.main.async {
                 if articles?.count == 0 {
                     self.keywardAlert()
                 }
+                //이미지를 받으면 response, MainThread에서 실행
+                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 self.everythingTableView.reloadData()
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
-  
             }
         }
     }
@@ -150,9 +199,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         service = NewsService()
         service?.fetchNewsProviders { (success, sources) in
             if !success { print("fail"); return }
-                        
             guard let items = sources else { print("no data!"); return }
-        
             self.providerData = items
                 
             DispatchQueue.main.async {
@@ -160,7 +207,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
             }
         }
     }
-    
+    //identify로 테이블을 찾기 위한 메소드
     func checkTableView(_ tableView: UITableView) -> String {
         if tableView == topHeadingTableView {
             return "TopHeadingTableViewCell"
@@ -185,36 +232,43 @@ extension MainViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cellIndentifier = checkTableView(tableView)
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIndentifier, for: indexPath) as! NewsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIndentifier,
+                                                 for: indexPath) as! NewsTableViewCell
         
         if cellIndentifier == "TopHeadingTableViewCell" {
             
-            cell.titleLabel.text           = internationalData[indexPath.row].title
-            cell.publishedAtLabel.text     = internationalData[indexPath.row].publishedAt
-            cell.sourceLabel.text          = internationalData[indexPath.row].author ?? "익명"
-            cell.newsDescriptionLabel.text = internationalData[indexPath.row].description
+            let dataAtRow = internationalData[indexPath.row]
+            cell.titleLabel.text           = dataAtRow.title
+            cell.publishedAtLabel.text     = dataAtRow.publishedAt
+            cell.sourceLabel.text          = dataAtRow.author ?? "익명"
+            cell.newsDescriptionLabel.text = dataAtRow.description
             
-            let remoteImageURL = URL(string: internationalData[indexPath.row].urlToImage ?? "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
+            //TODO: URL주소가 있음에도 로드가 안되는 이미지가 있다.
+            let remoteImageURL = URL(string: dataAtRow.urlToImage ?? "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
 
             cell.urlToImage?.sd_setImage(with: remoteImageURL)
             
         } else if cellIndentifier == "EverythingTableViewCell"  {
             
-            cell.titleLabel.text           = keywardData[indexPath.row].title
-            cell.publishedAtLabel.text     = keywardData[indexPath.row].publishedAt
-            cell.sourceLabel.text          = keywardData[indexPath.row].author ?? "익명"
-            cell.newsDescriptionLabel.text = keywardData[indexPath.row].description
+            let dataAtRow = keywardData[indexPath.row]
+            cell.titleLabel.text           = dataAtRow.title
+            cell.publishedAtLabel.text     = dataAtRow.publishedAt
+            cell.sourceLabel.text          = dataAtRow.author ?? "익명"
+            cell.newsDescriptionLabel.text = dataAtRow.description
+                        
+            //TODO: URL주소가 있음에도 로드가 안되는 이미지가 있다.
+            let remoteImageURL = URL(string: dataAtRow.urlToImage ?? "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
             
-            let remoteImageURL = URL(string: keywardData[indexPath.row].urlToImage ?? "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
-
             cell.urlToImage?.sd_setImage(with: remoteImageURL)
  
         } else {
-            cell.nameLabel.text = providerData[indexPath.row].name
-            cell.sourceDescription.text = providerData[indexPath.row].description
-            cell.languageLabel.text = "Language: " + (providerData[indexPath.row].language ?? "")
-            cell.countryLabel.text  = "Country: " + (providerData[indexPath.row].country ?? "")
+            let dataAtRow = providerData[indexPath.row]
+            cell.nameLabel.text         = dataAtRow.name
+            cell.sourceDescription.text = dataAtRow.description
+            cell.languageLabel.text     = "Language: " + (dataAtRow.language ?? "")
+            cell.countryLabel.text      = "Country: " + (dataAtRow.country ?? "")
         }
+        
         return cell
     }
     
@@ -240,6 +294,7 @@ extension MainViewController : UITableViewDataSource {
             if let url = URL(string: urlString){
                 UIApplication.shared.open(url, options: [:])
             }
+            
             print(internationalData[indexPath.row].urlToImage ?? "nil")
         }
         
@@ -251,6 +306,7 @@ extension MainViewController : UITableViewDataSource {
         }
     }
 }
+
 
 //MARK: UITableViewDelegate
 extension MainViewController : UITableViewDelegate {
@@ -291,7 +347,28 @@ extension MainViewController : UIScrollViewDelegate {
             searchBar.resignFirstResponder()
         }
     }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let height = scrollView.frame.size.height
+        let contentYoffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+        if distanceFromBottom < height {
+            startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
+                                  type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+//                let newsItems = (self.internationalData.count...self.internationalData.count + 20).map { index in index}
+                let newsItem = (self.article)
+                self.internationalData.append(newsItem)
+                self.fetchingMore = false
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+                self.topHeadingTableView.reloadData()
+
+            })
+        }
+    }
 }
+
 //MARK: NewsDetailViewControllerDelegate
 extension MainViewController : NewsDetailViewControllerDelegate {
      func getNewsItems() -> [Article]? {
@@ -303,6 +380,7 @@ extension MainViewController : NewsDetailViewControllerDelegate {
         return internationalData
     }
 }
+
 //MARK: CountryCollectionControllerDelegate
 extension MainViewController : CountryCollectionControllerDelegate {
     func countryApplyToService(_ savedCountryCode: String) {
@@ -321,17 +399,4 @@ extension MainViewController : UISearchBarDelegate {
     }
 }
 
-extension UIImageView {
-    func load(url: URL) {
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.image = image
-                    }
-                }
-            }
-        }
-    }
-}
 
