@@ -28,7 +28,11 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     var providerData = [Source]()
     var service : NewsService?
     var article = Article()
-    var fetchingMore = false
+    
+    var fetchingMore = false // 기사의 가장 아래로 스크롤울 내리면 true로 바뀜
+    var offset: Int = 1 // 2로 바뀌면 기사를 더 가져온다. applyInternational() 참조
+    let ViewFrame = UIScreen.main.bounds
+    
     var countryCode = "us" //CountryCollectionViewController의 countries 속성 중 선택
     var searchedText = "trump" //KeywardData의 초기 검색값
     
@@ -47,7 +51,6 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                 topHeadingTableView.scrollToRow(at: IndexPath(row: 0, section: 0),
                                                 at: .top, animated: false)
             }
-            
             toSelectCountryButton.alpha = 1
             searchBar.alpha = 0
             countryText.text = "What's News today in \(countryCode.uppercased())"
@@ -62,7 +65,6 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                 everythingTableView.scrollToRow(at: IndexPath(row: 0, section: 0),
                                                 at: .top, animated: false)
             }
-            
             toSelectCountryButton.alpha = 0
             searchBar.alpha = 1
             countryText.text = ""
@@ -74,7 +76,6 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
             searchBar.alpha = 0
             countryText.text = "List of News source"
             searchBar.resignFirstResponder()
-
         }
     }
     
@@ -84,13 +85,13 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         }
         vc.delegate = self
         self.present(vc, animated: true, completion: nil)
-        
     }
 
     //MARK: life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         toSelectCountryButton.layer.cornerRadius = 10
+
         searchBar.delegate = self
         topHeadingTableView.delegate = self
         topHeadingTableView.dataSource = self
@@ -100,66 +101,104 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         sourceTableView.dataSource = self
         mainScrollView.delegate = self
         mainScrollView.isPagingEnabled = true
-
-        applyInternational(countryCode)
-        doRefresh()
-//        initViewModel()
-//        initTableView()
-    }
-    
-//    func initViewModel() {
-//        service?.reloadHandler = { [weak self] in self?.topHeadingTableView.reloadData()}
-//    }
-//
-//    func initTableView() {
-//        topHeadingTableView.register(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(NewsTableViewCell.self))
-//
-//    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(MainViewController.refreshControlValueChanged(sender:)), for: .valueChanged)
+        self.topHeadingTableView.addSubview(refreshControl)
+        
+        self.createLoadingCell()
+        applyInternational(countryCode, 1)
+        doRefresh(topHeadingTableView)
+        doRefresh(everythingTableView)
+        doRefresh(sourceTableView)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         applyKeyword(searchedText)
         applyNewsProvider()
     }
     
+    //MARK: refresh Control
     @objc func refresh(sender: UIRefreshControl){
-        topHeadingTableView.reloadData()
-        sender.endRefreshing()
+        if newsSegmentControl.selectedSegmentIndex == 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                self.applyInternational(self.countryCode, 1)
+                self.topHeadingTableView.reloadData()
+                sender.endRefreshing()
+            })
+        }
+        
+        if newsSegmentControl.selectedSegmentIndex == 1 {
+            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                self.applyKeyword("stock")
+                self.everythingTableView.reloadData()
+                sender.endRefreshing()
+            })
+        }
+        
+        if newsSegmentControl.selectedSegmentIndex == 2 {
+            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                 self.applyNewsProvider()
+                 self.sourceTableView.reloadData()
+                 sender.endRefreshing()
+             })
+        }
     }
 
-    func doRefresh(){
+    func doRefresh(_ tableView: UITableView){
         let refreshControl = UIRefreshControl()
-        topHeadingTableView.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(MainViewController.refresh(sender:)),
-                                    for: .valueChanged)
-//        let refreshEveryThing = UIRefreshControl()
-//        everythingTableView.refreshControl = refreshEveryThing
-//        refreshEveryThing.addTarget(self, action: #selector(MainViewController.refresh(sender:)),
-//                                    for: .valueChanged)
+            tableView.refreshControl = refreshControl
+            refreshControl.addTarget(self, action: #selector(MainViewController.refresh(sender:)), for: .valueChanged)
+        tableView.addSubview(refreshControl)
     }
     
+    //TODO: Infinite Scrolling 다음 셀을 나타나게 할 것
+    @objc func refreshControlValueChanged(sender: UIRefreshControl) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            self.internationalData.removeAll()
+            self.createLoadingCell()
+            self.fetchingMore = true
+            self.applyInternational(self.countryCode, 1)
+            self.topHeadingTableView.reloadData()
+            sender.endRefreshing()
+        })
+    }
 
+    func createLoadingCell()  {
+        self.topHeadingTableView.register(cellType: LoadingTableViewCell.self)
+        let footerCell: UITableViewCell = self.topHeadingTableView.dequeueReusableCell(withIdentifier: "LoadingTableViewCell")!
+            (footerCell as! LoadingTableViewCell).startAnimating()
+            let footerView: UIView = footerCell.contentView
+            self.topHeadingTableView.tableFooterView = footerView
+            self.topHeadingTableView.frame = self.ViewFrame
+              //XXX: 테이블이 사라짐
+//            self.view.addSubview(self.everythingTableView)
+        }
     
-    func applyInternational(_ savedCountryCode: String){
+    //offset이 2번이면 기사를 더 가져옴
+    func applyInternational(_ savedCountryCode: String, _ offset: Int){
         //이미지가 다운되는동안 request
         startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
                        type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
        
         service = NewsService()
-        service?.fetchInternationalNews(countryCode: savedCountryCode) { (success, articles) in
+        service?.fetchInternationalNews(countryCode: savedCountryCode, offset: offset) { (success, articles) in
            
-            if !success { print("fail"); return }
+            if !success { print("fail")
+                DispatchQueue.main.async {
+                //데이터를 받으면 response, MainThread에서 실행
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+                }
+                return
+            }
             guard let items = articles else { print("no data!"); return }
-            self.internationalData = items
+            
+            if self.offset == 1 {
+                self.internationalData = items
+            } else {
+                self.internationalData += self.internationalData
+            }
             
              DispatchQueue.main.async {
                 if articles?.count == 0 {
@@ -173,14 +212,19 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     }
     
     func applyKeyword(_ searchedText : String){
-       //이미지가 다운되는동안 request
+       //데이터가 다운되는동안 request
         startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
                        type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
         
         service = NewsService()
         service?.fetchKeywordNews(keyword: searchedText) { (success, articles) in
 
-            if !success { print("fail"); return}
+            if !success { print("fail")
+                DispatchQueue.main.async {
+                //데이터를 받으면 response, MainThread에서 실행
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+                }
+            }
             guard let items = articles else { print("no data!"); return}
             self.keywardData = items
 
@@ -188,7 +232,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                 if articles?.count == 0 {
                     self.keywardAlert()
                 }
-                //이미지를 받으면 response, MainThread에서 실행
+                //데이터를 받으면 response, MainThread에서 실행
                  NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 self.everythingTableView.reloadData()
             }
@@ -225,6 +269,23 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         alertController.addAction(okAction)
         present(alertController, animated: true)
     }
+    
+//    func button(){
+//      let button = UIButton(frame: CGRect(x: 100, y: 100, width: 100, height: 50))
+//        button.backgroundColor = .green
+//        button.setTitle("Test Button", for: .normal)
+//        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+//
+//      self.view.addSubview(button)
+//    }
+//
+//    @objc func buttonAction(sender: UIButton!) {
+//        let controller = NewsDetailViewController()
+//        controller.delegate = self
+//        present(controller, animated: true, completion: nil)
+//    }
+    
+    
 }
 
 //MARK: UITableViewDataSource
@@ -249,18 +310,17 @@ extension MainViewController : UITableViewDataSource {
             cell.urlToImage?.sd_setImage(with: remoteImageURL)
             
         } else if cellIndentifier == "EverythingTableViewCell"  {
-            
+
             let dataAtRow = keywardData[indexPath.row]
             cell.titleLabel.text           = dataAtRow.title
             cell.publishedAtLabel.text     = dataAtRow.publishedAt
             cell.sourceLabel.text          = dataAtRow.author ?? "익명"
             cell.newsDescriptionLabel.text = dataAtRow.description
-                        
-            //TODO: URL주소가 있음에도 로드가 안되는 이미지가 있다.
+
             let remoteImageURL = URL(string: dataAtRow.urlToImage ?? "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
-            
+
             cell.urlToImage?.sd_setImage(with: remoteImageURL)
- 
+
         } else {
             let dataAtRow = providerData[indexPath.row]
             cell.nameLabel.text         = dataAtRow.name
@@ -325,7 +385,7 @@ extension MainViewController : UIScrollViewDelegate {
         let pageWidth = mainScrollView.frame.size.width
         let fractionalPage = mainScrollView.contentOffset.x / pageWidth
         MainPageControl.currentPage = Int(fractionalPage)
-        
+
         if MainPageControl.currentPage == 0 {
             newsSegmentControl.selectedSegmentIndex = 0
             toSelectCountryButton.alpha = 1
@@ -346,27 +406,38 @@ extension MainViewController : UIScrollViewDelegate {
             countryText.text = "List of News source"
             searchBar.resignFirstResponder()
         }
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let height = scrollView.frame.size.height
-        let contentYoffset = scrollView.contentOffset.y
-        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
-        if distanceFromBottom < height {
-            startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
-                                  type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-//                let newsItems = (self.internationalData.count...self.internationalData.count + 20).map { index in index}
-                let newsItem = (self.article)
-                self.internationalData.append(newsItem)
+        
+        //스크롤의 가장 아래로 내려갈때 데이터 갱신
+        if (self.topHeadingTableView.contentOffset.y +
+            self.topHeadingTableView.frame.size.height >
+            self.topHeadingTableView.contentSize.height &&
+            self.topHeadingTableView.isDragging && fetchingMore == true){
                 self.fetchingMore = false
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
-                self.topHeadingTableView.reloadData()
-
-            })
-        }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    self.applyInternational(self.countryCode, 2)
+                    self.topHeadingTableView.tableFooterView = UIView()
+                    self.topHeadingTableView.reloadData()
+                }
+            }
     }
+     
+//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        let height = scrollView.frame.size.height
+//        let contentYoffset = scrollView.contentOffset.y
+//        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+//        if distanceFromBottom < height {
+//
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+////                let newsItems = (self.internationalData.count...self.internationalData.count + 20).map { index in index}
+//                let newsItem = (self.article)
+//                self.internationalData.append(newsItem)
+//                self.fetchingMore = false
+//                self.topHeadingTableView.reloadData()
+//
+//            })
+//
+//        }
+//    }
 }
 
 //MARK: NewsDetailViewControllerDelegate
@@ -385,8 +456,9 @@ extension MainViewController : NewsDetailViewControllerDelegate {
 extension MainViewController : CountryCollectionControllerDelegate {
     func countryApplyToService(_ savedCountryCode: String) {
         countryCode = savedCountryCode
-        applyInternational(countryCode)
+        applyInternational(countryCode, 1)
         countryText.text = "Whta's News today in \(countryCode.uppercased())"
+        createLoadingCell()
     }
 }
 

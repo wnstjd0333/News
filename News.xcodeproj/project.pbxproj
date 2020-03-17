@@ -34,6 +34,10 @@
 		F78D3556240F809D003E2B13 /* CountryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78D3555240F809D003E2B13 /* CountryCollectionViewController.swift */; };
 		F78D35662410B2DA003E2B13 /* Pods_News.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEBD56CF349E0D18813E8FD6 /* Pods_News.framework */; };
 		F78D35702410B834003E2B13 /* NVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F78D356F2410B834003E2B13 /* NVActivityIndicatorView.framework */; };
+		F78D357D242056B2003E2B13 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78D357B242056B2003E2B13 /* LoadingTableViewCell.swift */; };
+		F78D357E242056B2003E2B13 /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F78D357C242056B2003E2B13 /* LoadingTableViewCell.xib */; };
+		F78D358424206F99003E2B13 /* NewsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F78D358324206F98003E2B13 /* NewsDetailViewController.xib */; };
+		F78D35862420B373003E2B13 /* UITableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78D35852420B373003E2B13 /* UITableViewExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +99,10 @@
 		F78D3551240F3BDB003E2B13 /* CountryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCollectionViewCell.swift; sourceTree = "<group>"; };
 		F78D3555240F809D003E2B13 /* CountryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCollectionViewController.swift; sourceTree = "<group>"; };
 		F78D356F2410B834003E2B13 /* NVActivityIndicatorView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NVActivityIndicatorView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F78D357B242056B2003E2B13 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
+		F78D357C242056B2003E2B13 /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
+		F78D358324206F98003E2B13 /* NewsDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewsDetailViewController.xib; sourceTree = "<group>"; };
+		F78D35852420B373003E2B13 /* UITableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,7 +233,11 @@
 				B8980E9023FBBD16000E2C21 /* Service */,
 				F739DD9E23F3B91B00FCD714 /* AppDelegate.swift */,
 				F739DDA023F3B91B00FCD714 /* SceneDelegate.swift */,
+				F78D357B242056B2003E2B13 /* LoadingTableViewCell.swift */,
+				F78D35852420B373003E2B13 /* UITableViewExtension.swift */,
+				F78D357C242056B2003E2B13 /* LoadingTableViewCell.xib */,
 				F739DDA223F3B91B00FCD714 /* MainViewController.swift */,
+				F78D358324206F98003E2B13 /* NewsDetailViewController.xib */,
 				F78D354D240DF473003E2B13 /* NewsDetailViewController.swift */,
 				F78D3555240F809D003E2B13 /* CountryCollectionViewController.swift */,
 				F739DDB223F3D36F00FCD714 /* NewsTableViewCell.swift */,
@@ -333,7 +345,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F739DDAB23F3B91C00FCD714 /* LaunchScreen.storyboard in Resources */,
+				F78D358424206F99003E2B13 /* NewsDetailViewController.xib in Resources */,
 				F739DDA823F3B91C00FCD714 /* Assets.xcassets in Resources */,
+				F78D357E242056B2003E2B13 /* LoadingTableViewCell.xib in Resources */,
 				F739DDA623F3B91B00FCD714 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -441,10 +455,12 @@
 				B8980EA323FBBD17000E2C21 /* HTTPMethod.swift in Sources */,
 				B8980EA223FBBD17000E2C21 /* ACHNewsAPI.swift in Sources */,
 				F78D3556240F809D003E2B13 /* CountryCollectionViewController.swift in Sources */,
+				F78D35862420B373003E2B13 /* UITableViewExtension.swift in Sources */,
 				B8980EA023FBBD17000E2C21 /* Article.swift in Sources */,
 				B8980EA523FBBD17000E2C21 /* ACHNewsAPIError.swift in Sources */,
 				F71579B623FFEC1B00503701 /* Source.swift in Sources */,
 				F78D354E240DF473003E2B13 /* NewsDetailViewController.swift in Sources */,
+				F78D357D242056B2003E2B13 /* LoadingTableViewCell.swift in Sources */,
 				F739DDB323F3D36F00FCD714 /* NewsTableViewCell.swift in Sources */,
 				F78D3550240DFAF5003E2B13 /* NewsDetailView.swift in Sources */,
 				F739DD9F23F3B91B00FCD714 /* AppDelegate.swift in Sources */,

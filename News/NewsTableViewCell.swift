@@ -7,7 +7,9 @@
 //
 
 import UIKit
-class NewsTableViewCell: UITableViewCell {
+import NVActivityIndicatorView
+
+class NewsTableViewCell: UITableViewCell, NVActivityIndicatorViewable{
         
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var newsDescriptionLabel: UILabel!
@@ -19,8 +21,11 @@ class NewsTableViewCell: UITableViewCell {
     @IBOutlet weak var countryLabel: UILabel!
     @IBOutlet weak var languageLabel: UILabel!
     @IBOutlet weak var sourceDescription: UILabel!
-    
-    var finishReload: Bool = false
-
-    
+        
+    func startAnimation(){
+        DispatchQueue.main.async {
+            NVActivityIndicatorPresenter.sharedInstance.startAnimating(.init(size: CGSize(width: 30.0, height: 30.0), message: "Lodding", type: NVActivityIndicatorType.ballClipRotate, color: .blue, minimumDisplayTime: 1, backgroundColor: .brown, textColor: .cyan))
+             NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+        }
+    }
 }
