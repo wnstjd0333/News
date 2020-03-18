@@ -144,7 +144,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="wYl-Fl-lPA">
+                            <pageControl opaque="NO" alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="wYl-Fl-lPA">
                                 <rect key="frame" x="187" y="349" width="39" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </pageControl>
@@ -162,6 +162,12 @@
                                     <action selector="newsSwitchControlTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="zYN-o7-U1Z"/>
                                 </connections>
                             </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="There is no information available" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6H1-9b-KVz">
+                                <rect key="frame" x="67.666666666666686" y="356" width="279" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fvI-jp-QdE">
                                 <rect key="frame" x="0.0" y="109" width="414" height="35"/>
                                 <subviews>
@@ -186,7 +192,7 @@
                                     <constraint firstAttribute="trailing" secondItem="E4k-WL-ckJ" secondAttribute="trailing" id="rRe-CV-WBg"/>
                                 </constraints>
                             </view>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fve-z2-DXP">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fve-z2-DXP">
                                 <rect key="frame" x="0.0" y="144" width="414" height="592"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="jSL-vY-4UQ">
@@ -443,12 +449,14 @@
                         <constraints>
                             <constraint firstItem="fve-z2-DXP" firstAttribute="top" secondItem="fvI-jp-QdE" secondAttribute="bottom" id="0oR-cr-lId"/>
                             <constraint firstItem="YXJ-dv-oJF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="Ddc-hG-GVE"/>
+                            <constraint firstItem="6H1-9b-KVz" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="F3x-4Y-fJg"/>
                             <constraint firstItem="fve-z2-DXP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Fqf-lb-XhJ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fvI-jp-QdE" secondAttribute="trailing" id="IRm-Vs-Fhs"/>
                             <constraint firstItem="fvI-jp-QdE" firstAttribute="top" secondItem="YXJ-dv-oJF" secondAttribute="bottom" constant="5" id="JVE-k9-X31"/>
                             <constraint firstItem="fvI-jp-QdE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="MV8-gc-9HN"/>
                             <constraint firstItem="YXJ-dv-oJF" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="MhJ-lL-vNS"/>
                             <constraint firstItem="fve-z2-DXP" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="dhC-xo-mgt"/>
+                            <constraint firstItem="6H1-9b-KVz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="hem-Lx-Yf6"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="fve-z2-DXP" secondAttribute="bottom" id="kDc-G0-AkC"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fve-z2-DXP" secondAttribute="trailing" id="pka-40-tpl"/>
                         </constraints>
@@ -476,6 +484,7 @@
                         <outlet property="everythingTableView" destination="0YB-UN-aDt" id="rfq-EH-G2z"/>
                         <outlet property="mainScrollView" destination="fve-z2-DXP" id="bZi-0C-SGe"/>
                         <outlet property="newsSegmentControl" destination="YXJ-dv-oJF" id="fRW-ua-fAO"/>
+                        <outlet property="noDataLabel" destination="6H1-9b-KVz" id="YLm-6O-RTL"/>
                         <outlet property="searchBar" destination="E4k-WL-ckJ" id="Ons-6T-5bw"/>
                         <outlet property="searchContainerView" destination="fvI-jp-QdE" id="bFz-6M-Fkx"/>
                         <outlet property="sourceTableView" destination="F21-Pg-lOf" id="aKW-pm-EUp"/>

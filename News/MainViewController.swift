@@ -22,20 +22,19 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var everythingTableView: UITableView!
     @IBOutlet weak var sourceTableView: UITableView!
+    @IBOutlet weak var noDataLabel: UILabel!
     
     var internationalData = [Article]()
     var keywardData = [Article]()
     var providerData = [Source]()
     var service : NewsService?
-
-    var article : Article?
     var fetchingMore = false
-
     var countryCode = "us" //CountryCollectionViewController의 countries 속성 중 선택
     var searchedText = "trump" //KeywardData의 초기 검색값
-    
     let pageSize = 20
-    var page = 0
+    var internationalPage = 0
+    var keywardPage = 0
+    var resetIndex = 0 // 0이면 refresh가능, 1이면 불가능 (기사 100개가 최대이다)
     
     //MARK: action
     @IBAction func newsSwitchControlTapped(_ sender: UISegmentedControl) {
@@ -45,10 +44,12 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         
         if newsSegmentControl.selectedSegmentIndex == 0 {
             
-            if internationalData.count == 0 {
-                keywardAlert()
+            if internationalData.count == 0 && resetIndex == 0{
+                topHeadingTableView.alpha = 0
                 return
+                
             } else {
+                topHeadingTableView.alpha = 1
                 topHeadingTableView.scrollToRow(at: IndexPath(row: 0, section: 0),
                                                 at: .top, animated: false)
             }
@@ -59,10 +60,12 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
             
         } else if newsSegmentControl.selectedSegmentIndex == 1 {
             
-            if keywardData.count == 0 {
-                keywardAlert()
+            if keywardData.count == 0 && resetIndex == 0{
+                everythingTableView.alpha = 0
                 return
+                
             } else {
+                everythingTableView.alpha = 1
                 everythingTableView.scrollToRow(at: IndexPath(row: 0, section: 0),
                                                 at: .top, animated: false)
             }
@@ -103,12 +106,8 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         mainScrollView.delegate = self
         mainScrollView.isPagingEnabled = true
         
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(MainViewController.refreshControlValueChanged(sender:)), for: .valueChanged)
-        self.topHeadingTableView.addSubview(refreshControl)
-        
-        self.createLoadingCell()
-        applyInternational(countryCode, 1)
+        applyInternational(countryCode)
+
         doRefresh(topHeadingTableView)
         doRefresh(everythingTableView)
         doRefresh(sourceTableView)
@@ -120,14 +119,20 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         applyNewsProvider()
     }
     
-    //MARK: refresh Control
+    //refresh Control
     @objc func refresh(sender: UIRefreshControl){
         if newsSegmentControl.selectedSegmentIndex == 0 {
-            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-                self.applyInternational(self.countryCode, 1)
-                self.topHeadingTableView.reloadData()
-                sender.endRefreshing()
-            })
+            if resetIndex == 0 {
+                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                    self.applyInternational(self.countryCode)
+                    self.topHeadingTableView.reloadData()
+                    sender.endRefreshing()
+                })
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                    sender.endRefreshing()
+                })
+            }
         }
         
         if newsSegmentControl.selectedSegmentIndex == 1 {
@@ -154,37 +159,15 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         tableView.addSubview(refreshControl)
     }
     
-    //TODO: Infinite Scrolling 다음 셀을 나타나게 할 것
-    @objc func refreshControlValueChanged(sender: UIRefreshControl) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-            self.internationalData.removeAll()
-            self.createLoadingCell()
-            self.fetchingMore = true
-            self.applyInternational(self.countryCode, 1)
-            self.topHeadingTableView.reloadData()
-            sender.endRefreshing()
-        })
-    }
-
-    func createLoadingCell()  {
-        self.topHeadingTableView.register(cellType: LoadingTableViewCell.self)
-        let footerCell: UITableViewCell = self.topHeadingTableView.dequeueReusableCell(withIdentifier: "LoadingTableViewCell")!
-            (footerCell as! LoadingTableViewCell).startAnimating()
-            let footerView: UIView = footerCell.contentView
-            self.topHeadingTableView.tableFooterView = footerView
-            //self.topHeadingTableView.frame = self.ViewFrame
-              //XXX: 테이블이 사라짐
-//            self.view.addSubview(self.everythingTableView)
-        }
-    
-    //offset이 2번이면 기사를 더 가져옴
-    func applyInternational(_ savedCountryCode: String, _ offset: Int){
+    func applyInternational(_ savedCountryCode: String){
         //이미지가 다운되는동안 request
         startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
                        type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
        
         service = NewsService()
-        service?.fetchInternationalNews(countryCode: savedCountryCode, page: page, pageSize: pageSize) { (success, articles) in
+        self.topHeadingTableView.alpha = 1
+        self.resetIndex = 0
+        service?.fetchInternationalNews(countryCode: savedCountryCode, page: internationalPage, pageSize: pageSize) { (success, articles) in
            
             if !success { print("fail")
                 DispatchQueue.main.async {
@@ -192,21 +175,17 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 }
                 return
+    
             }
             guard let items = articles else { print("no data!"); return }
-            
-//            if self.offset == 1 {
-//                self.internationalData = items
-//            } else {
-//                self.internationalData += self.internationalData
-//            }
+            self.internationalData = items
             
              DispatchQueue.main.async {
                 if articles?.count == 0 {
-                    self.keywardAlert()
+                    self.topHeadingTableView.alpha = 0
                 }
                 
-                self.page = self.internationalData.count / self.pageSize - 1
+                self.internationalPage = self.internationalData.count / self.pageSize - 1
                 
                 //이미지를 받으면 response, MainThread에서 실행
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
@@ -221,21 +200,27 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                        type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
         
         service = NewsService()
+        self.everythingTableView.alpha = 1
+        self.resetIndex = 0
         service?.fetchKeywordNews(keyword: searchedText) { (success, articles) in
-
+            
             if !success { print("fail")
                 DispatchQueue.main.async {
                 //데이터를 받으면 response, MainThread에서 실행
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 }
+                return
             }
             guard let items = articles else { print("no data!"); return}
             self.keywardData = items
 
             DispatchQueue.main.async {
                 if articles?.count == 0 {
-                    self.keywardAlert()
+                    self.everythingTableView.alpha = 0
                 }
+                
+                self.keywardPage = self.keywardData.count / self.pageSize - 1
+
                 //데이터를 받으면 response, MainThread에서 실행
                  NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 self.everythingTableView.reloadData()
@@ -267,29 +252,12 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         return ""
     }
     
-    func keywardAlert(){
-        let alertController = UIAlertController(title: "Result", message: "There is no Information", preferredStyle: .alert)
+    func maximumAlert(){
+        let alertController = UIAlertController(title: "Result", message: "100 articles are maximum", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
         alertController.addAction(okAction)
         present(alertController, animated: true)
     }
-    
-//    func button(){
-//      let button = UIButton(frame: CGRect(x: 100, y: 100, width: 100, height: 50))
-//        button.backgroundColor = .green
-//        button.setTitle("Test Button", for: .normal)
-//        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-//
-//      self.view.addSubview(button)
-//    }
-//
-//    @objc func buttonAction(sender: UIButton!) {
-//        let controller = NewsDetailViewController()
-//        controller.delegate = self
-//        present(controller, animated: true, completion: nil)
-//    }
-    
-    
 }
 
 //MARK: UITableViewDataSource
@@ -349,28 +317,38 @@ extension MainViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView == sourceTableView {
-            return
-        }
-        
-        if tableView == topHeadingTableView {
-            let urlString = internationalData[indexPath.row].url ?? ""
-            if let url = URL(string: urlString){
-                UIApplication.shared.open(url, options: [:])
+        let alert = UIAlertController(title: "Original URL", message: "Are you sure going the page?", preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+
+            if tableView == self.sourceTableView {
+                 return
+             }
+
+            if tableView == self.topHeadingTableView {
+                let urlString = self.internationalData[indexPath.row].url ?? ""
+                if let url = URL(string: urlString){
+                    UIApplication.shared.open(url, options: [:])
+                }
+
+                print(self.internationalData[indexPath.row].urlToImage ?? "nil")
+             }
+
+            if tableView == self.everythingTableView {
+                let urlString = self.keywardData[indexPath.row].url ?? ""
+                if let url = URL(string: urlString){
+                    UIApplication.shared.open(url, options: [:])
+                }
             }
-            
-            print(internationalData[indexPath.row].urlToImage ?? "nil")
-        }
-        
-        if tableView == everythingTableView {
-            let urlString = keywardData[indexPath.row].url ?? ""
-            if let url = URL(string: urlString){
-                UIApplication.shared.open(url, options: [:])
-            }
-        }
+        }))
+        alert.addAction(UIAlertAction(title: "NO", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+
+        }))
+            self.present(alert, animated: true, completion: nil)
     }
 }
-
 
 //MARK: UITableViewDelegate
 extension MainViewController : UITableViewDelegate {
@@ -417,58 +395,59 @@ extension MainViewController : UIScrollViewDelegate {
         let contentYoffset = scrollView.contentOffset.y
         let distanceFromBottom = scrollView.contentSize.height - contentYoffset
         if distanceFromBottom < height {
-//            startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
-//                                  type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
+            if newsSegmentControl.selectedSegmentIndex == 0 {
             
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-//                let newsItems = (self.internationalData.count...self.internationalData.count + 20).map { index in index}
-//                let newsItem = (self.article)
-//                self.internationalData.append(article)
-//                self.fetchingMore = false
-//                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
-                
-            startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
-            type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
+                startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
+                               type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
             
-            service?.fetchInternationalNews(countryCode: countryCode, page: page, pageSize: pageSize) { (success, articles) in
+                service?.fetchInternationalNews(countryCode: countryCode, page: internationalPage, pageSize: pageSize) { (success, articles) in
                   
                    if !success { print("fail"); return }
                    guard let items = articles else { print("no data!"); return }
-                self.internationalData.append(contentsOf: items)
+                   self.internationalData.append(contentsOf: items)
                    
-                    DispatchQueue.main.async {
-                       if articles?.count == 0 {
-                           self.keywardAlert()
-                       }
-                       
-                        self.page = self.internationalData.count / self.pageSize - 1
-                        print("page:\(self.page)")
-                       //이미지를 받으면 response, MainThread에서 실행
-                       NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
-                       self.topHeadingTableView.reloadData()
+                        DispatchQueue.main.async {
+                            if articles?.count == 0 {
+                                self.resetIndex = 1
+                                self.maximumAlert()
+                            }
+                    
+                        self.internationalPage = self.internationalData.count / self.pageSize - 1
+                        print("page:\(self.internationalPage)")
+                        //이미지를 받으면 response, MainThread에서 실행
+                        NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+                        self.topHeadingTableView.reloadData()
                     }
+                    
                 }
-//            })
+            }
+//            if newsSegmentControl.selectedSegmentIndex == 1 {
+//
+//                startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
+//                               type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
+//
+//                service?.fetchKeywordNews(keyword: searchedText, page: keywardPage, pageSize: pageSize) { (success, articles) in
+//
+//                   if !success { print("fail"); return }
+//                   guard let items = articles else { print("no data!"); return }
+//                    self.keywardData.append(contentsOf: items)
+//
+//                        DispatchQueue.main.async {
+//                            if articles?.count == 0 {
+//                                self.resetIndex = 1
+//                                self.maximumAlert()
+//                            }
+//
+//                        self.keywardPage = self.keywardData.count / self.pageSize - 1
+//                        print("page:\(self.keywardPage)")
+//                        //이미지를 받으면 response, MainThread에서 실행
+//                        NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+//                        self.everythingTableView.reloadData()
+//                    }
+//                }
+//            }
         }
     }
-     
-//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        let height = scrollView.frame.size.height
-//        let contentYoffset = scrollView.contentOffset.y
-//        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
-//        if distanceFromBottom < height {
-//
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-////                let newsItems = (self.internationalData.count...self.internationalData.count + 20).map { index in index}
-//                let newsItem = (self.article)
-//                self.internationalData.append(newsItem)
-//                self.fetchingMore = false
-//                self.topHeadingTableView.reloadData()
-//
-//            })
-//
-//        }
-//    }
 }
 
 //MARK: NewsDetailViewControllerDelegate
@@ -487,9 +466,8 @@ extension MainViewController : NewsDetailViewControllerDelegate {
 extension MainViewController : CountryCollectionControllerDelegate {
     func countryApplyToService(_ savedCountryCode: String) {
         countryCode = savedCountryCode
-        applyInternational(countryCode, 1)
+        applyInternational(countryCode)
         countryText.text = "Whta's News today in \(countryCode.uppercased())"
-        createLoadingCell()
     }
 }
 
@@ -501,5 +479,3 @@ extension MainViewController : UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
 }
-
-

@@ -10,7 +10,7 @@ import Foundation
 
 class NewsService {
     
-    func fetchInternationalNews(countryCode: String, page: Int = 1, pageSize: Int = 20,completion: @escaping (Bool, [Article]?)->Void) {
+    func fetchInternationalNews(countryCode: String, page: Int, pageSize: Int ,completion: @escaping (Bool, [Article]?)->Void) {
         
         let client = ACHNewsClient()
         let request = ACHNewsAPI.InternationalNews(country: countryCode, page: page, pageSize: pageSize)

@@ -10,7 +10,7 @@ import Foundation
 
 final class ACHNewsAPI {
     
-    static let apiKey = "1cbc735ec5564a2a8890343f5d23bc61"
+    static let apiKey = "52d80fad4fce4ac3bfaa4d428d0eccbd"
     
     struct InternationalNews : ACHNewsRequest {
         
