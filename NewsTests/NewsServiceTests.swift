@@ -27,6 +27,14 @@ class NewsServiceTests: XCTestCase {
         service.fetchInternationalNews(countryCode: "kr") { (success, articles) in
             XCTAssertEqual(success, true)
         }
+        
+        service.fetchInternationalNews(countryCode: "kr",page: 1) { (success, articles) in
+            XCTAssertEqual(success, true)
+        }
+        
+        service.fetchInternationalNews(countryCode: "kr",page: 2) { (success, articles) in
+            XCTAssertEqual(success, true)
+        }
     }
 
     func testPerformanceExample() {
