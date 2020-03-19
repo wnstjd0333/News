@@ -40,6 +40,8 @@ final class ACHNewsAPI {
     struct KeywordNewsRequest : ACHNewsRequest {
 
         let keyword: String
+        var page: Int
+        var pageSize: Int
         
         typealias Response = NewsResponse<Article>
 
@@ -54,7 +56,9 @@ final class ACHNewsAPI {
         var queryItems: [URLQueryItem] {
             return [
                 URLQueryItem(name: "q", value: keyword),
-                URLQueryItem(name: "apiKey", value: apiKey)]
+                URLQueryItem(name: "apiKey", value: apiKey),
+                URLQueryItem(name: "pageSize", value: String(pageSize)),
+                URLQueryItem(name: "page", value: String(page))]
         }
     }
     

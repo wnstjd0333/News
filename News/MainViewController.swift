@@ -33,7 +33,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     var searchedText = "trump" //KeywardData의 초기 검색값
     let pageSize = 20
     var internationalPage = 0
-    var keywardPage = 0
+    var keywardPage = 1 // default가 0보다 커야한다. (Int)
     var resetIndex = 0 // 0이면 refresh가능, 1이면 불가능 (기사 100개가 최대이다)
     
     //MARK: action
@@ -185,7 +185,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                     self.topHeadingTableView.alpha = 0
                 }
                 
-                self.internationalPage = self.internationalData.count / self.pageSize - 1
+                self.internationalPage = self.internationalData.count / (self.pageSize - 1)
                 
                 //이미지를 받으면 response, MainThread에서 실행
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
@@ -202,7 +202,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         service = NewsService()
         self.everythingTableView.alpha = 1
         self.resetIndex = 0
-        service?.fetchKeywordNews(keyword: searchedText) { (success, articles) in
+        service?.fetchKeywordNews(keyword: searchedText, page: keywardPage, pageSize: pageSize) { (success, articles) in
             
             if !success { print("fail")
                 DispatchQueue.main.async {
@@ -219,7 +219,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                     self.everythingTableView.alpha = 0
                 }
                 
-                self.keywardPage = self.keywardData.count / self.pageSize - 1
+                self.keywardPage = self.keywardData.count / (self.pageSize - 1)
 
                 //데이터를 받으면 response, MainThread에서 실행
                  NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
@@ -257,6 +257,10 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
         alertController.addAction(okAction)
         present(alertController, animated: true)
+    }
+    
+    func updateUI(){
+        
     }
 }
 
@@ -412,7 +416,7 @@ extension MainViewController : UIScrollViewDelegate {
                                 self.maximumAlert()
                             }
                     
-                        self.internationalPage = self.internationalData.count / self.pageSize - 1
+                        self.internationalPage = self.internationalData.count / (self.pageSize - 1)
                         print("page:\(self.internationalPage)")
                         //이미지를 받으면 response, MainThread에서 실행
                         NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
@@ -421,31 +425,31 @@ extension MainViewController : UIScrollViewDelegate {
                     
                 }
             }
-//            if newsSegmentControl.selectedSegmentIndex == 1 {
-//
-//                startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
-//                               type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
-//
-//                service?.fetchKeywordNews(keyword: searchedText, page: keywardPage, pageSize: pageSize) { (success, articles) in
-//
-//                   if !success { print("fail"); return }
-//                   guard let items = articles else { print("no data!"); return }
-//                    self.keywardData.append(contentsOf: items)
-//
-//                        DispatchQueue.main.async {
-//                            if articles?.count == 0 {
-//                                self.resetIndex = 1
-//                                self.maximumAlert()
-//                            }
-//
-//                        self.keywardPage = self.keywardData.count / self.pageSize - 1
-//                        print("page:\(self.keywardPage)")
-//                        //이미지를 받으면 response, MainThread에서 실행
-//                        NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
-//                        self.everythingTableView.reloadData()
-//                    }
-//                }
-//            }
+            if newsSegmentControl.selectedSegmentIndex == 1 {
+
+                startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
+                               type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
+
+                service?.fetchKeywordNews(keyword: searchedText, page: keywardPage, pageSize: pageSize) { (success, articles) in
+
+                   if !success { print("fail"); return }
+                   guard let items = articles else { print("no data!"); return }
+                    self.keywardData.append(contentsOf: items)
+
+                        DispatchQueue.main.async {
+                            if articles?.count == 0 {
+                                self.resetIndex = 1
+                                self.maximumAlert()
+                            }
+
+                        self.keywardPage = self.keywardData.count / (self.pageSize - 1)
+                        print("page:\(self.keywardPage)")
+                        //이미지를 받으면 response, MainThread에서 실행
+                        NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+                        self.everythingTableView.reloadData()
+                    }
+                }
+            }
         }
     }
 }

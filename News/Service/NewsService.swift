@@ -27,10 +27,10 @@ class NewsService {
         }
     }
     
-    func fetchKeywordNews(keyword: String, completion: @escaping (Bool, [Article]?)->Void) {
+    func fetchKeywordNews(keyword: String, page: Int, pageSize: Int, completion: @escaping (Bool, [Article]?)->Void) {
         
         let client = ACHNewsClient()
-        let request = ACHNewsAPI.KeywordNewsRequest(keyword: keyword)
+        let request = ACHNewsAPI.KeywordNewsRequest(keyword: keyword, page: page, pageSize: pageSize)
         
         client.send(request: request) { result in
             switch result {
