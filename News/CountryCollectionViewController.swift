@@ -46,7 +46,6 @@ class CountryCollectionViewController : UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     //MARK: action
@@ -78,6 +77,7 @@ extension CountryCollectionViewController : UICollectionViewDataSource {
         cell.countryImageView.image = countryImages[indexPath.item]
         cell.layer.borderColor = UIColor.lightGray.cgColor
         cell.layer.borderWidth = 0.5
+        cell.layer.cornerRadius = 10
         
         return cell
     }
@@ -88,6 +88,7 @@ extension CountryCollectionViewController : UICollectionViewDataSource {
         cell = collectionView.cellForItem(at: indexPath) as! CountryCollectionViewCell
         cell.layer.borderColor = UIColor.gray.cgColor
         cell.layer.borderWidth = 3
+        cell.layer.cornerRadius = 10
         countryName = countries[indexPath.row]
     }
     
@@ -95,5 +96,6 @@ extension CountryCollectionViewController : UICollectionViewDataSource {
         let cell = collectionView.cellForItem(at: indexPath)
         cell?.layer.borderColor = UIColor.lightGray.cgColor
         cell?.layer.borderWidth = 0.5
+        cell?.layer.cornerRadius = 10
     }
 }
