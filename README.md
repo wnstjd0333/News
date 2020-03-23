@@ -22,8 +22,8 @@ Getting Started
 
 Screenshot
 -------------
-<img width="250" alt="スクリーンショット 2020-03-19 16 10 03" src="https://user-images.githubusercontent.com/46039674/77041132-a9394800-69fc-11ea-84a1-4ff9d521c077.png"> <img width="250" alt="スクリーンショット 2020-03-19 16 10 24" src="https://user-images.githubusercontent.com/46039674/77041128-a8a0b180-69fc-11ea-8dd8-65ccc0e61969.png"> <img width="250" alt="スクリーンショット 2020-03-19 16 10 36" src="https://user-images.githubusercontent.com/46039674/77041133-a9d1de80-69fc-11ea-8755-c741895e687a.png">
-<img width="250" alt="スクリーンショット 2020-03-19 16 13 40" src="https://user-images.githubusercontent.com/46039674/77041125-a8081b00-69fc-11ea-9a62-9474e55044c7.png"> <img width="250" alt="スクリーンショット 2020-03-19 16 11 00" src="https://user-images.githubusercontent.com/46039674/77041119-a4749400-69fc-11ea-8240-e2665f88ec84.png">
+<img width="250" src="https://user-images.githubusercontent.com/46039674/77278268-3c76c400-6d02-11ea-97e1-f906523a18ed.jpeg"><img width="250" src="https://user-images.githubusercontent.com/46039674/77278270-3ed91e00-6d02-11ea-949f-4dd3fe56e59f.jpeg"><img width="250" src="https://user-images.githubusercontent.com/46039674/77278272-400a4b00-6d02-11ea-8b27-243735c97552.jpeg">
+<img width="250" src="https://user-images.githubusercontent.com/46039674/77278273-40a2e180-6d02-11ea-9d71-f2480b606a4f.jpeg"><img width="250" src="https://user-images.githubusercontent.com/46039674/77278275-40a2e180-6d02-11ea-925f-326a26197d19.jpeg">
 
 
 Lisence
