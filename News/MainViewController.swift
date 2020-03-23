@@ -31,6 +31,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     var fetchingMore = false
     var countryCode = "us" //CountryCollectionViewController의 countries 속성 중 선택
     var searchedText = "trump" //KeywardData의 초기 검색값
+    var storedText = "" //keayward 저장값
     let pageSize = 20
     var internationalPage = 0
     var keywardPage = 1 // default가 0보다 커야한다. (Int)
@@ -60,7 +61,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
             
         } else if newsSegmentControl.selectedSegmentIndex == 1 {
             
-            if keywardData.count == 0 && resetIndex == 0{
+            if keywardData.count == 0 && resetIndex == 0 {
                 everythingTableView.alpha = 0
                 return
                 
@@ -107,16 +108,12 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         mainScrollView.isPagingEnabled = true
         
         applyInternational(countryCode)
-
+        applyKeyword(searchedText)
+        applyNewsProvider()
+        
         doRefresh(topHeadingTableView)
         doRefresh(everythingTableView)
         doRefresh(sourceTableView)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        applyKeyword(searchedText)
-        applyNewsProvider()
     }
     
     //refresh Control
@@ -130,19 +127,30 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                 })
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                    self.internationalPage = 0
+                    self.applyInternational(self.countryCode)
+                    self.topHeadingTableView.reloadData()
                     sender.endRefreshing()
                 })
             }
         }
         
         if newsSegmentControl.selectedSegmentIndex == 1 {
-            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-                self.applyKeyword("stock")
-                self.everythingTableView.reloadData()
-                sender.endRefreshing()
-            })
+            if resetIndex == 0 {
+                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                    self.applyKeyword("\(self.searchedText)")
+                    self.everythingTableView.reloadData()
+                    sender.endRefreshing()
+                })
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                    self.keywardPage = 1
+                    self.applyKeyword("\(self.storedText)")
+                    self.everythingTableView.reloadData()
+                    sender.endRefreshing()
+                })
+            }
         }
-        
         if newsSegmentControl.selectedSegmentIndex == 2 {
             DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                  self.applyNewsProvider()
@@ -321,14 +329,14 @@ extension MainViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == self.sourceTableView {
+             return
+         }
+
         let alert = UIAlertController(title: "Original URL", message: "Are you sure going the page?", preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { (action) in
                 alert.dismiss(animated: true, completion: nil)
-
-            if tableView == self.sourceTableView {
-                 return
-             }
 
             if tableView == self.topHeadingTableView {
                 let urlString = self.internationalData[indexPath.row].url ?? ""
@@ -430,16 +438,18 @@ extension MainViewController : UIScrollViewDelegate {
                 startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
                                type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
 
-                service?.fetchKeywordNews(keyword: searchedText, page: keywardPage, pageSize: pageSize) { (success, articles) in
+                service?.fetchKeywordNews(keyword: storedText, page: keywardPage, pageSize: pageSize) { (success, articles) in
 
                    if !success { print("fail"); return }
                    guard let items = articles else { print("no data!"); return }
                     self.keywardData.append(contentsOf: items)
 
                         DispatchQueue.main.async {
-                            if articles?.count == 0 {
+                            if self.keywardPage == 5 {
                                 self.resetIndex = 1
                                 self.maximumAlert()
+                                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
+                                return
                             }
 
                         self.keywardPage = self.keywardData.count / (self.pageSize - 1)
@@ -470,6 +480,7 @@ extension MainViewController : NewsDetailViewControllerDelegate {
 extension MainViewController : CountryCollectionControllerDelegate {
     func countryApplyToService(_ savedCountryCode: String) {
         countryCode = savedCountryCode
+        internationalPage = 0
         applyInternational(countryCode)
         countryText.text = "Whta's News today in \(countryCode.uppercased())"
     }
@@ -479,7 +490,9 @@ extension MainViewController : CountryCollectionControllerDelegate {
 extension MainViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchBarText = searchBar.text else { return }
+        keywardPage = 1
         applyKeyword(searchBarText)
+        storedText = searchBarText
         searchBar.resignFirstResponder()
     }
 }

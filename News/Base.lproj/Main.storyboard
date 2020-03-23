@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="LRo-8q-jjk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="LRo-8q-jjk">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,18 +29,18 @@
                                             <inset key="sectionInset" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CountryCollectionViewCell" id="iV2-db-esq" customClass="CountryCollectionViewCell" customModule="News" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CountryCollectionViewCell" id="iV2-db-esq" customClass="CountryCollectionViewCell" customModule="News" customModuleProvider="target">
                                                 <rect key="frame" x="8" y="0.0" width="80" height="80"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="QwC-Aq-DKp">
+                                                <collectionViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="QwC-Aq-DKp">
                                                     <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZHk-ZU-zUQ">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZHk-ZU-zUQ">
                                                             <rect key="frame" x="16" y="8" width="48" height="45"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="45" id="O4o-v4-HBL"/>
-                                                                <constraint firstAttribute="width" constant="45" id="zWp-uO-erv"/>
+                                                                <constraint firstAttribute="height" priority="750" constant="45" id="O4o-v4-HBL"/>
+                                                                <constraint firstAttribute="width" priority="750" constant="45" id="zWp-uO-erv"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p3S-aL-YxV">
@@ -71,7 +71,7 @@
                                             <outlet property="delegate" destination="8Gl-21-afR" id="zwJ-lD-jrN"/>
                                         </connections>
                                     </collectionView>
-                                    <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZUi-BF-3IE">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZUi-BF-3IE">
                                         <rect key="frame" x="8" y="344" width="284" height="40"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J8h-i7-2iv">
@@ -195,7 +195,7 @@
             </objects>
             <point key="canvasLocation" x="1031.8840579710145" y="-589.4021739130435"/>
         </scene>
-        <!--Main View Controller-->
+        <!--JS NEWS-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="News" customModuleProvider="target" sceneMemberID="viewController">
@@ -310,7 +310,7 @@
                                                                         <constraint firstItem="0gD-3j-il9" firstAttribute="top" secondItem="9vR-SA-QXZ" secondAttribute="top" constant="3" id="8gA-gG-1LB"/>
                                                                         <constraint firstItem="k3x-W7-H0X" firstAttribute="top" secondItem="9vR-SA-QXZ" secondAttribute="top" constant="16" id="G2z-6t-QIp"/>
                                                                         <constraint firstItem="Bmf-Ne-9iM" firstAttribute="leading" secondItem="k3x-W7-H0X" secondAttribute="trailing" constant="16" id="GgE-Ah-nq2"/>
-                                                                        <constraint firstAttribute="height" constant="80" id="Hb5-Fn-TnF"/>
+                                                                        <constraint firstAttribute="height" priority="750" constant="80" id="Hb5-Fn-TnF"/>
                                                                         <constraint firstItem="k3x-W7-H0X" firstAttribute="leading" secondItem="9vR-SA-QXZ" secondAttribute="leading" constant="8" id="Wmv-6v-pnN"/>
                                                                         <constraint firstAttribute="trailing" secondItem="BMo-cg-WyB" secondAttribute="trailing" constant="8" id="gSR-LQ-WPh"/>
                                                                         <constraint firstItem="NCO-EA-obZ" firstAttribute="top" secondItem="0gD-3j-il9" secondAttribute="bottom" constant="2" id="hiR-yJ-i3A"/>
@@ -392,7 +392,7 @@
                                                                         <constraint firstItem="jfX-wZ-Awv" firstAttribute="leading" secondItem="M6k-I2-UtX" secondAttribute="trailing" constant="4" id="4SV-gI-kXi"/>
                                                                         <constraint firstItem="jfX-wZ-Awv" firstAttribute="top" secondItem="r8P-fK-tf7" secondAttribute="bottom" constant="4" id="CsN-Gy-tu7"/>
                                                                         <constraint firstItem="r8P-fK-tf7" firstAttribute="leading" secondItem="M6k-I2-UtX" secondAttribute="trailing" constant="4" id="Hmj-Eq-VM1"/>
-                                                                        <constraint firstAttribute="height" constant="100" id="R9T-OQ-OTV"/>
+                                                                        <constraint firstAttribute="height" priority="750" constant="100" id="R9T-OQ-OTV"/>
                                                                         <constraint firstAttribute="bottom" secondItem="WDk-qC-mKT" secondAttribute="bottom" constant="4" id="UpE-kh-whg"/>
                                                                         <constraint firstItem="L7s-8Y-qml" firstAttribute="top" secondItem="pWH-Rg-vP3" secondAttribute="top" constant="3" id="aRR-qu-idG"/>
                                                                         <constraint firstAttribute="trailing" secondItem="r8P-fK-tf7" secondAttribute="trailing" constant="4" id="ahS-uO-paq"/>
@@ -469,7 +469,7 @@
                                                                         <constraint firstItem="dOs-ff-csg" firstAttribute="top" secondItem="69k-BP-L4n" secondAttribute="top" constant="3" id="aQd-tM-yWF"/>
                                                                         <constraint firstItem="qGC-H4-69i" firstAttribute="leading" secondItem="yDt-Lr-Ve7" secondAttribute="trailing" constant="40" id="cwo-2s-Ous"/>
                                                                         <constraint firstItem="dOs-ff-csg" firstAttribute="leading" secondItem="69k-BP-L4n" secondAttribute="leading" constant="8" id="hqW-5T-m5S"/>
-                                                                        <constraint firstAttribute="height" constant="44" id="jv2-Cq-Hsl"/>
+                                                                        <constraint firstAttribute="height" priority="750" constant="44" id="jv2-Cq-Hsl"/>
                                                                     </constraints>
                                                                 </view>
                                                             </subviews>
@@ -521,7 +521,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Xlu-L5-BWh">
+                    <navigationItem key="navigationItem" title="JS NEWS" id="Xlu-L5-BWh">
                         <barButtonItem key="rightBarButtonItem" title="Country" style="plain" id="J5a-qm-drs">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hmX-sF-wr2">
                                 <rect key="frame" x="302" y="7" width="92" height="30"/>
