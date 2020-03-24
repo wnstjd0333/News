@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		466D742D646A713C3521BB57 /* Pods_NewsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84706486AD0B10CC8C086DFD /* Pods_NewsTests.framework */; };
+		B85AECFB2429C45C00DBD4E5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B85AECFD2429C45C00DBD4E5 /* Localizable.strings */; };
 		B8980E9F23FBBD17000E2C21 /* NewsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8980E9323FBBD16000E2C21 /* NewsResponse.swift */; };
 		B8980EA023FBBD17000E2C21 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8980E9523FBBD16000E2C21 /* Article.swift */; };
 		B8980EA223FBBD17000E2C21 /* ACHNewsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8980E9823FBBD16000E2C21 /* ACHNewsAPI.swift */; };
@@ -64,6 +65,8 @@
 		0DACCF46E0583B283C55F4C8 /* Pods-News.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-News.debug.xcconfig"; path = "Target Support Files/Pods-News/Pods-News.debug.xcconfig"; sourceTree = "<group>"; };
 		1B5DAECB37D1C687CCD0F070 /* Pods-News.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-News.release.xcconfig"; path = "Target Support Files/Pods-News/Pods-News.release.xcconfig"; sourceTree = "<group>"; };
 		84706486AD0B10CC8C086DFD /* Pods_NewsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NewsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B85AECFC2429C45C00DBD4E5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B85AED012429C4BA00DBD4E5 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B8980E9323FBBD16000E2C21 /* NewsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsResponse.swift; sourceTree = "<group>"; };
 		B8980E9523FBBD16000E2C21 /* Article.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		B8980E9823FBBD16000E2C21 /* ACHNewsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACHNewsAPI.swift; sourceTree = "<group>"; };
@@ -139,6 +142,14 @@
 				D2C6F4BBD977E863562ECDA0 /* Pods-NewsTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		B85AECF82429C33800DBD4E5 /* LocalizedString */ = {
+			isa = PBXGroup;
+			children = (
+				B85AECFD2429C45C00DBD4E5 /* Localizable.strings */,
+			);
+			path = LocalizedString;
 			sourceTree = "<group>";
 		};
 		B8980E9023FBBD16000E2C21 /* Service */ = {
@@ -238,6 +249,7 @@
 				F78D354F240DFAF5003E2B13 /* NewsDetailView.swift */,
 				F739DDA923F3B91C00FCD714 /* LaunchScreen.storyboard */,
 				F739DDAC23F3B91C00FCD714 /* Info.plist */,
+				B85AECF82429C33800DBD4E5 /* LocalizedString */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -311,6 +323,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = F739DD9223F3B91B00FCD714;
 			productRefGroup = F739DD9C23F3B91B00FCD714 /* Products */;
@@ -335,6 +348,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B85AECFB2429C45C00DBD4E5 /* Localizable.strings in Resources */,
 				F739DDAB23F3B91C00FCD714 /* LaunchScreen.storyboard in Resources */,
 				F78D358424206F99003E2B13 /* NewsDetailViewController.xib in Resources */,
 				F739DDA823F3B91C00FCD714 /* Assets.xcassets in Resources */,
@@ -472,6 +486,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		B85AECFD2429C45C00DBD4E5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B85AECFC2429C45C00DBD4E5 /* en */,
+				B85AED012429C4BA00DBD4E5 /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		F739DDA423F3B91B00FCD714 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -535,6 +558,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -595,6 +619,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
