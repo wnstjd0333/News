@@ -547,6 +547,7 @@
                         <outlet property="searchBar" destination="E4k-WL-ckJ" id="Ons-6T-5bw"/>
                         <outlet property="searchContainerView" destination="fvI-jp-QdE" id="bFz-6M-Fkx"/>
                         <outlet property="sourceTableView" destination="F21-Pg-lOf" id="aKW-pm-EUp"/>
+                        <outlet property="titleBar" destination="Xlu-L5-BWh" id="YBy-ff-rgM"/>
                         <outlet property="toSelectCountryButton" destination="hmX-sF-wr2" id="82U-Iw-YX6"/>
                         <outlet property="topHeadingTableView" destination="P7K-si-4vB" id="810-iN-yAu"/>
                     </connections>

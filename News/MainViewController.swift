@@ -23,6 +23,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     @IBOutlet weak var everythingTableView: UITableView!
     @IBOutlet weak var sourceTableView: UITableView!
     @IBOutlet weak var noDataLabel: UILabel!
+    @IBOutlet weak var titleBar: UINavigationItem!
     
     var internationalData = [Article]()
     var keywardData = [Article]()
@@ -56,7 +57,8 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
             }
             toSelectCountryButton.alpha = 1
             searchBar.alpha = 0
-            countryText.text = "What's News today in \(countryCode.uppercased())"
+            let text = String(format: NSLocalizedString("main_country_select_text", comment: ""), countryCode.uppercased())
+            countryText.text = text
             searchBar.resignFirstResponder()
             
         } else if newsSegmentControl.selectedSegmentIndex == 1 {
@@ -95,6 +97,11 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     //MARK: life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        titleBar.title = NSLocalizedString("app_title", comment: "")
+        let text = String(format: NSLocalizedString("main_country_select_text", comment: ""), countryCode.uppercased())
+        countryText.text = text
+        
         toSelectCountryButton.layer.cornerRadius = 10
 
         searchBar.delegate = self
@@ -384,7 +391,8 @@ extension MainViewController : UIScrollViewDelegate {
             newsSegmentControl.selectedSegmentIndex = 0
             toSelectCountryButton.alpha = 1
             searchBar.alpha = 0
-            countryText.text = "What's News today in \(countryCode.uppercased())"
+            let text = String(format: NSLocalizedString("main_country_select_text", comment: ""), countryCode.uppercased())
+            countryText.text = text
             searchBar.resignFirstResponder()
 
         } else if MainPageControl.currentPage == 1 {
@@ -482,7 +490,8 @@ extension MainViewController : CountryCollectionControllerDelegate {
         countryCode = savedCountryCode
         internationalPage = 0
         applyInternational(countryCode)
-        countryText.text = "Whta's News today in \(countryCode.uppercased())"
+        let text = String(format: NSLocalizedString("main_country_select_text", comment: ""), countryCode.uppercased())
+        countryText.text = text
     }
 }
 
