@@ -273,10 +273,6 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         alertController.addAction(okAction)
         present(alertController, animated: true)
     }
-    
-    func updateUI(){
-        
-    }
 }
 
 //MARK: UITableViewDataSource
@@ -442,10 +438,14 @@ extension MainViewController : UIScrollViewDelegate {
                 }
             }
             if newsSegmentControl.selectedSegmentIndex == 1 {
-
+                
                 startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
                                type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
-
+                
+                if storedText == "" {
+                    storedText = searchedText
+                }
+                
                 service?.fetchKeywordNews(keyword: storedText, page: keywardPage, pageSize: pageSize) { (success, articles) in
 
                    if !success { print("fail"); return }

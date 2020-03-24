@@ -7,12 +7,14 @@
 //
 
 import Foundation
+import Alamofire
 
 class NewsService {
     
     func fetchInternationalNews(countryCode: String, page: Int, pageSize: Int ,completion: @escaping (Bool, [Article]?)->Void) {
         
         let client = ACHNewsClient()
+        
         let request = ACHNewsAPI.InternationalNews(country: countryCode, page: page, pageSize: pageSize)
         
         client.send(request: request) { result in

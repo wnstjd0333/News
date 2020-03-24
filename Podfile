@@ -7,6 +7,9 @@ target 'News' do
 
   pod 'NVActivityIndicatorView'
   pod 'SDWebImage', '~> 4.0'
+  pod 'Alamofire', '~> 5.0'
+  pod 'AlamofireObjectMapper'
+  
   # Pods for News
 
   target 'NewsTests' do
