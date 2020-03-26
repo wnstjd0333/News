@@ -296,11 +296,14 @@ extension MainViewController : UITableViewDataSource {
             cell.sourceLabel.text          = dataAtRow.author ?? "익명"
             cell.newsDescriptionLabel.text = dataAtRow.description
             
+            //print("dataAtRow.urlToImage: \(dataAtRow.urlToImage)")
+            
             //TODO: URL주소가 있음에도 로드가 안되는 이미지가 있다.
-            let remoteImageURL = URL(string: dataAtRow.urlToImage ??
-                "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
-
-            cell.urlToImage?.sd_setImage(with: remoteImageURL)
+            if let imageString = dataAtRow.urlToImage {
+                let remoteImageURL = URL(string: imageString)
+                cell.urlToImage.setImageBySDWebImage(with: remoteImageURL)
+            }
+            
             
         } else if cellIndentifier == "EverythingTableViewCell"  {
 
@@ -310,10 +313,10 @@ extension MainViewController : UITableViewDataSource {
             cell.sourceLabel.text          = dataAtRow.author ?? "익명"
             cell.newsDescriptionLabel.text = dataAtRow.description
 
-            let remoteImageURL = URL(string: dataAtRow.urlToImage ??
-                "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
-
-            cell.urlToImage?.sd_setImage(with: remoteImageURL)
+            if let imageString = dataAtRow.urlToImage {
+                let remoteImageURL = URL(string: imageString)
+                cell.urlToImage.setImageBySDWebImage(with: remoteImageURL)
+            }
 
         } else {
             let dataAtRow = providerData[indexPath.row]
@@ -517,3 +520,26 @@ extension MainViewController : UISearchBarDelegate {
     }
 }
 
+extension UIImageView {
+
+    func setImageBySDWebImage(with url: URL?) {
+
+        guard let imageUrl = url else {
+            self.backgroundColor = .lightGray
+            return
+        }
+        
+        self.sd_setImage(with: imageUrl) { [weak self] image, error, _, _ in
+            // Success
+            if error == nil, let image = image {
+                self?.image = image
+                self?.backgroundColor = .clear
+            // Failure
+            } else {
+                // error handling
+                self?.backgroundColor = .blue
+            }
+        }
+
+    }
+}
