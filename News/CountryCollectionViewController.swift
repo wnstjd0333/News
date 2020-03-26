@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Localize_Swift
 
 protocol CountryCollectionControllerDelegate : class {
     func countryApplyToService(_ savedCountryCode: String)
@@ -57,6 +58,8 @@ class CountryCollectionViewController : UIViewController {
         delegate?.countryApplyToService(countryName)
         dismiss(animated: true, completion: nil)
     }
+    
+    
 }
 
 //MARK: UICollectionViewDelegate

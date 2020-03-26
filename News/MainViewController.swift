@@ -57,10 +57,10 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
             }
             toSelectCountryButton.alpha = 1
             searchBar.alpha = 0
-            let text = String(format: NSLocalizedString("main_country_select_text", comment: ""), countryCode.uppercased())
-            countryText.text = text
+            titleBar.title = "app_title".localizableString("\(countryCode)")
+            countryText.text = "main_country_select_text".localizableString("\(countryCode)")
             searchBar.resignFirstResponder()
-            
+           
         } else if newsSegmentControl.selectedSegmentIndex == 1 {
             
             if keywardData.count == 0 && resetIndex == 0 {
@@ -98,9 +98,8 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        titleBar.title = NSLocalizedString("app_title", comment: "")
-        let text = String(format: NSLocalizedString("main_country_select_text", comment: ""), countryCode.uppercased())
-        countryText.text = text
+        titleBar.title = "app_title".localizableString("\(countryCode)")
+        countryText.text = "main_country_select_text".localizableString("\(countryCode)")
         
         toSelectCountryButton.layer.cornerRadius = 10
 
@@ -387,8 +386,8 @@ extension MainViewController : UIScrollViewDelegate {
             newsSegmentControl.selectedSegmentIndex = 0
             toSelectCountryButton.alpha = 1
             searchBar.alpha = 0
-            let text = String(format: NSLocalizedString("main_country_select_text", comment: ""), countryCode.uppercased())
-            countryText.text = text
+            titleBar.title = "app_title".localizableString("\(countryCode)")
+            countryText.text = "main_country_select_text".localizableString("\(countryCode)")
             searchBar.resignFirstResponder()
 
         } else if MainPageControl.currentPage == 1 {
@@ -490,8 +489,8 @@ extension MainViewController : CountryCollectionControllerDelegate {
         countryCode = savedCountryCode
         internationalPage = 0
         applyInternational(countryCode)
-        let text = String(format: NSLocalizedString("main_country_select_text", comment: ""), countryCode.uppercased())
-        countryText.text = text
+        titleBar.title = "app_title".localizableString("\(countryCode)")
+        countryText.text = "main_country_select_text".localizableString("\(countryCode)")
     }
 }
 
@@ -503,5 +502,56 @@ extension MainViewController : UISearchBarDelegate {
         applyKeyword(searchBarText)
         storedText = searchBarText
         searchBar.resignFirstResponder()
+    }
+}
+
+extension String {
+    func localizableString(_ country: String) -> String {
+        if country == "us" {
+            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "en", ofType: "lproj")!)!,
+            value: "", comment: "")
+        }
+        
+        if country == "jp" {
+            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "ja", ofType: "lproj")!)!,
+            value: "", comment: "")
+        }
+        
+        if country == "kr" {
+            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "ko", ofType: "lproj")!)!,
+            value: "", comment: "")
+        }
+        
+        if country == "ae" {
+            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "ar-AE", ofType: "lproj")!)!,
+            value: "", comment: "")
+        }
+        
+        if country == "se" {
+            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "sv", ofType: "lproj")!)!,
+            value: "", comment: "")
+        }
+        
+        if country == "ar" || country == "br" || country == "co" {
+              return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "es-419", ofType: "lproj")!)!,
+              value: "", comment: "")
+          }
+        
+        if country == "cn" {
+            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "zh-HK", ofType: "lproj")!)!,
+            value: "", comment: "")
+        }
+        
+        if country == "ch" {
+            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "de", ofType: "lproj")!)!,
+            value: "", comment: "")
+        }
+        
+        guard let path = Bundle.main.path(forResource: country, ofType: "lproj"),
+        let bundle = Bundle(path: path) else {
+            return NSLocalizedString(self, comment: "")
+        }
+        return NSLocalizedString(self, tableName: nil, bundle: bundle,
+                                 value: "", comment: "")
     }
 }
