@@ -113,14 +113,32 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         sourceTableView.dataSource = self
         mainScrollView.delegate = self
         mainScrollView.isPagingEnabled = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        applyInternational(countryCode)
-        applyKeyword(searchedText)
-        applyNewsProvider()
+        reloadAll()
         
-        doRefresh(topHeadingTableView)
-        doRefresh(everythingTableView)
-        doRefresh(sourceTableView)
+        addObservers()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        removeObservers()
+    }
+    
+    //REMARK: Notification callback
+    //TODO: とりあえずデータ取得処理をいれていますが、状況によって修正が必要
+    @objc func viewWillEnterForeground(notification: Notification) {
+        print("viewWillEnterForeground")
+        
+        reloadAll()
+    }
+
+    @objc func viewDidEnterBackground(notification: Notification) {
+        print("viewDidEnterBackground")
     }
     
     //refresh Control
@@ -167,6 +185,43 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         }
     }
 
+    private func addObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(viewWillEnterForeground(notification:)),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(viewDidEnterBackground(notification:)),
+            name: UIApplication.didEnterBackgroundNotification,
+            object: nil)
+    }
+    
+    private func removeObservers() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil)
+        
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.didEnterBackgroundNotification,
+            object: nil)
+    }
+    
+    private func reloadAll() {
+        
+        applyInternational(countryCode)
+        applyKeyword(searchedText)
+        applyNewsProvider()
+        
+        doRefresh(topHeadingTableView)
+        doRefresh(everythingTableView)
+        doRefresh(sourceTableView)
+    }
+    
     func doRefresh(_ tableView: UITableView){
         let refreshControl = UIRefreshControl()
             tableView.refreshControl = refreshControl
