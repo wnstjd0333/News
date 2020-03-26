@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Localize_Swift
 
 protocol CountryCollectionControllerDelegate : class {
     func countryApplyToService(_ savedCountryCode: String)

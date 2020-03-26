@@ -87,7 +87,8 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     }
     
     @IBAction func countryButtonClicked(_ sender: Any) {
-        guard let vc = storyboard?.instantiateViewController(identifier: "Country") as? CountryCollectionViewController else {
+        guard let vc = storyboard?.instantiateViewController(identifier: "Country")
+                        as? CountryCollectionViewController else {
             return
         }
         vc.delegate = self
@@ -169,7 +170,8 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     func doRefresh(_ tableView: UITableView){
         let refreshControl = UIRefreshControl()
             tableView.refreshControl = refreshControl
-            refreshControl.addTarget(self, action: #selector(MainViewController.refresh(sender:)), for: .valueChanged)
+            refreshControl.addTarget(self, action: #selector(MainViewController.refresh(sender:)),
+                                     for: .valueChanged)
         tableView.addSubview(refreshControl)
     }
     
@@ -181,7 +183,8 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         service = NewsService()
         self.topHeadingTableView.alpha = 1
         self.resetIndex = 0
-        service?.fetchInternationalNews(countryCode: savedCountryCode, page: internationalPage, pageSize: pageSize) { (success, articles) in
+        service?.fetchInternationalNews(countryCode: savedCountryCode, page: internationalPage,
+                                        pageSize: pageSize) { (success, articles) in
            
             if !success { print("fail")
                 DispatchQueue.main.async {
@@ -216,7 +219,8 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
         service = NewsService()
         self.everythingTableView.alpha = 1
         self.resetIndex = 0
-        service?.fetchKeywordNews(keyword: searchedText, page: keywardPage, pageSize: pageSize) { (success, articles) in
+        service?.fetchKeywordNews(keyword: searchedText, page: keywardPage,
+                                  pageSize: pageSize) { (success, articles) in
             
             if !success { print("fail")
                 DispatchQueue.main.async {
@@ -267,7 +271,9 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     }
     
     func maximumAlert(){
-        let alertController = UIAlertController(title: "Result", message: "100 articles are maximum", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Result",
+                                                message: "100 articles are maximum",
+                                                preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
         alertController.addAction(okAction)
         present(alertController, animated: true)
@@ -291,7 +297,8 @@ extension MainViewController : UITableViewDataSource {
             cell.newsDescriptionLabel.text = dataAtRow.description
             
             //TODO: URL주소가 있음에도 로드가 안되는 이미지가 있다.
-            let remoteImageURL = URL(string: dataAtRow.urlToImage ?? "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
+            let remoteImageURL = URL(string: dataAtRow.urlToImage ??
+                "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
 
             cell.urlToImage?.sd_setImage(with: remoteImageURL)
             
@@ -303,7 +310,8 @@ extension MainViewController : UITableViewDataSource {
             cell.sourceLabel.text          = dataAtRow.author ?? "익명"
             cell.newsDescriptionLabel.text = dataAtRow.description
 
-            let remoteImageURL = URL(string: dataAtRow.urlToImage ?? "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
+            let remoteImageURL = URL(string: dataAtRow.urlToImage ??
+                "https://upload.wikimedia.org/wikipedia/ja/b/b5/Noimage_image.png")
 
             cell.urlToImage?.sd_setImage(with: remoteImageURL)
 
@@ -335,7 +343,9 @@ extension MainViewController : UITableViewDataSource {
              return
          }
 
-        let alert = UIAlertController(title: "Original URL", message: "Are you sure going the page?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Original URL",
+                                      message: "Are you sure going the page?",
+                                      preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { (action) in
                 alert.dismiss(animated: true, completion: nil)
@@ -415,7 +425,8 @@ extension MainViewController : UIScrollViewDelegate {
                 startAnimating(CGSize(width: 30.0, height: 30.0), message: "Loadding",
                                type: NVActivityIndicatorType.ballPulse, fadeInAnimation: nil)
             
-                service?.fetchInternationalNews(countryCode: countryCode, page: internationalPage, pageSize: pageSize) { (success, articles) in
+                service?.fetchInternationalNews(countryCode: countryCode, page: internationalPage,
+                                                pageSize: pageSize) { (success, articles) in
                   
                    if !success { print("fail"); return }
                    guard let items = articles else { print("no data!"); return }
@@ -445,7 +456,8 @@ extension MainViewController : UIScrollViewDelegate {
                     storedText = searchedText
                 }
                 
-                service?.fetchKeywordNews(keyword: storedText, page: keywardPage, pageSize: pageSize) { (success, articles) in
+                service?.fetchKeywordNews(keyword: storedText, page: keywardPage,
+                                          pageSize: pageSize) { (success, articles) in
 
                    if !success { print("fail"); return }
                    guard let items = articles else { print("no data!"); return }
@@ -505,53 +517,3 @@ extension MainViewController : UISearchBarDelegate {
     }
 }
 
-extension String {
-    func localizableString(_ country: String) -> String {
-        if country == "us" {
-            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "en", ofType: "lproj")!)!,
-            value: "", comment: "")
-        }
-        
-        if country == "jp" {
-            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "ja", ofType: "lproj")!)!,
-            value: "", comment: "")
-        }
-        
-        if country == "kr" {
-            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "ko", ofType: "lproj")!)!,
-            value: "", comment: "")
-        }
-        
-        if country == "ae" {
-            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "ar-AE", ofType: "lproj")!)!,
-            value: "", comment: "")
-        }
-        
-        if country == "se" {
-            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "sv", ofType: "lproj")!)!,
-            value: "", comment: "")
-        }
-        
-        if country == "ar" || country == "br" || country == "co" {
-              return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "es-419", ofType: "lproj")!)!,
-              value: "", comment: "")
-          }
-        
-        if country == "cn" {
-            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "zh-HK", ofType: "lproj")!)!,
-            value: "", comment: "")
-        }
-        
-        if country == "ch" {
-            return NSLocalizedString(self, tableName: nil, bundle: Bundle(path: Bundle.main.path(forResource: "de", ofType: "lproj")!)!,
-            value: "", comment: "")
-        }
-        
-        guard let path = Bundle.main.path(forResource: country, ofType: "lproj"),
-        let bundle = Bundle(path: path) else {
-            return NSLocalizedString(self, comment: "")
-        }
-        return NSLocalizedString(self, tableName: nil, bundle: bundle,
-                                 value: "", comment: "")
-    }
-}
