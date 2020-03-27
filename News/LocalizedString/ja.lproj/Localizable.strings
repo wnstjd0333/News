@@ -1,2 +1,7 @@
 "app_title" = "JSニュース";
 "main_country_select_text" = "今日のニュースです。";
+"main_source_text" = "ニュースソースの一覧";
+"country_select_button" = "国家";
+"first_segment_text" = "トップ見出し";
+"second_segment_text" = "すべて";
+"third_segment_text" = "出処";

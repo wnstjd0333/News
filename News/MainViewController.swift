@@ -57,8 +57,8 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
             }
             toSelectCountryButton.alpha = 1
             searchBar.alpha = 0
-            titleBar.title = "app_title".localizableString("\(countryCode)")
             countryText.text = "main_country_select_text".localizableString("\(countryCode)")
+
             searchBar.resignFirstResponder()
            
         } else if newsSegmentControl.selectedSegmentIndex == 1 {
@@ -81,7 +81,7 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
                                         at: .top, animated: false)
             toSelectCountryButton.alpha = 0
             searchBar.alpha = 0
-            countryText.text = "List of News source"
+            countryText.text = "main_source_text".localizableString("\(countryCode)")
             searchBar.resignFirstResponder()
         }
     }
@@ -98,9 +98,6 @@ class MainViewController: UIViewController, NVActivityIndicatorViewable {
     //MARK: life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        titleBar.title = "app_title".localizableString("\(countryCode)")
-        countryText.text = "main_country_select_text".localizableString("\(countryCode)")
         
         toSelectCountryButton.layer.cornerRadius = 10
 
@@ -454,8 +451,6 @@ extension MainViewController : UIScrollViewDelegate {
             newsSegmentControl.selectedSegmentIndex = 0
             toSelectCountryButton.alpha = 1
             searchBar.alpha = 0
-            titleBar.title = "app_title".localizableString("\(countryCode)")
-            countryText.text = "main_country_select_text".localizableString("\(countryCode)")
             searchBar.resignFirstResponder()
 
         } else if MainPageControl.currentPage == 1 {
@@ -468,7 +463,7 @@ extension MainViewController : UIScrollViewDelegate {
             newsSegmentControl.selectedSegmentIndex = 2
             toSelectCountryButton.alpha = 0
             searchBar.alpha = 0
-            countryText.text = "List of News source"
+            countryText.text = "main_source_text".localizableString("\(countryCode)")
             searchBar.resignFirstResponder()
         }
     }
@@ -558,9 +553,18 @@ extension MainViewController : CountryCollectionControllerDelegate {
     func countryApplyToService(_ savedCountryCode: String) {
         countryCode = savedCountryCode
         internationalPage = 0
-        applyInternational(countryCode)
         titleBar.title = "app_title".localizableString("\(countryCode)")
         countryText.text = "main_country_select_text".localizableString("\(countryCode)")
+        newsSegmentControl.setTitle("first_segment_text".localizableString(
+            "\(countryCode)"), forSegmentAt: 0)
+        newsSegmentControl.setTitle("second_segment_text".localizableString(
+            "\(countryCode)"), forSegmentAt: 1)
+        newsSegmentControl.setTitle("third_segment_text".localizableString(
+            "\(countryCode)"), forSegmentAt: 2)
+        toSelectCountryButton.setTitle("country_select_button"
+            .localizableString("\(countryCode)"), for: .normal)
+        applyInternational(countryCode)
+
     }
 }
 

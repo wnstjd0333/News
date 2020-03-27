@@ -1,2 +1,7 @@
 "app_title"="JS 뉴스";
 "main_country_select_text" = "오늘의 뉴스입니다";
+"main_source_text" = "List of News source";
+"country_select_button" = "Country";
+"first_segment_text" = "TopHeading";
+"second_segment_text" = "Everything";
+"third_segment_text" = "Source";
